@@ -10,8 +10,8 @@ var creds = require('./creds.js');
 var admins = require('./admins.js')
 
 // ===== Githib dev config
-var GITHUB_CLIENT_ID = creds.GITHUB_CLIENT_ID;
-var GITHUB_CLIENT_SECRET = creds.GITHUB_CLIENT_SECRET;
+var GITHUB_CLIENT_ID = process.env.GITHUB_CLIENT_ID;
+var GITHUB_CLIENT_SECRET = process.env.GITHUB_CLIENT_SECRET;
 
 // ===== login using Github OAuth2 =>https://github.com/cfsghost/passport-github
 var passport = require('passport');

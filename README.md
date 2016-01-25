@@ -37,3 +37,23 @@ Output: The Process. Details go into the README on GitHub
   - **Decision** API that returns the final summary of the decisions made.
 
 Note: This will evolve :)
+
+
+### How to run the application
+Prerequisites:
+- Setup node and npm
+
+Setup
+```
+git clone https://github.com/CollabAcademy/UnWorkshop
+cd UnWorkshop
+npm install
+```
+- Open the file `sample_creds.js`
+- Fill in your github dev credentials (https://github.com/settings/developers)
+- Rename the file to `creds.js`
+
+```
+node app.js
+```
+- Visit http://localhost:3000

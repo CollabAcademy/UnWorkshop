@@ -1,13 +1,23 @@
 # 2016-MIT-IAP-PrototypeJam UnWorkshop
 An Online Participatory Tool for the 2016 IAP PrototypeJam
+ http://collabacademy.github.io/UnWorkshop 
 
 ## What is this?
   **For Mass Participatory Ideation, Prioritization & Decision Making**
 
-A tool/framework to help you gather, filter, choose and decide what to work on from the vast set of the ideas.
+A tool/framework to help you gather, filter, choose and decide what to work on from a vast set of ideas.  
 
-### The initial use case explained:
-Goal: Deciding on what has to be built in the spring semester at law.MIT
+This tool in intended to enable large groups and entire populations to self-organize, self-govern and self-start the innovative: 
+* production of new products, 
+* deployment of new services, 
+* launch of new ventures and/or
+* creation of other new value
+
+# Initial Reference Implementation: 
+
+**Goal: Invent & Launch Innovative MIT/Law Spring Blockchain Project** 
+* Method: Recursive rounds of ideation and prioritization which produce by design the deployment of innovative new value
+* Mechanism: Online participants generate a new innovative project though several rounds of ideation and decision.   Each proposal or other contribution should have an equal opportunity to be considered and advanved to the next round.  A webform and other actions (sliders, selectors, etc) can enable simulteneous proposal of ideas followed immediately be simulteneous rating of each idea by a statistically significant number and cross-section of the population. 
 
 ## ROUND ONE: WHAT
 **Ask: What do you want to be hacking?**
@@ -24,9 +34,8 @@ Output: The project summary as a README in the GitHub repo
 Output: The Process. Details go into the README on GitHub
 
 ## ROUND THREE: WHEN
-  - Ask *What key milestones* and *Dates* should we use.
-  - Automate the results to Milestones in GitHub
-  - Tie the "Successfully Achieved Success Metric" Issue to the Output
+  - Ask *What key milestones* and *Dates* to hack this project?
+  - Automate the results to Milestones in GitHub, and include the "Successfully Achieved Success Metric" data as an Issue tied to a key project milestone.
 
 ### MVP - 1 - features
   - API to **register** participants

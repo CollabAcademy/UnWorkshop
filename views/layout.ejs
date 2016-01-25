@@ -6,13 +6,18 @@
 	<body>
 		<% if (!user) { %>
 			<p>
-			<a href="/">Home</a> | 
+			<a href="/">Home</a> |
 			<a href="/login">Log In</a>
 			</p>
 		<% } else { %>
 			<p>
-			<a href="/">Home</a> | 
-			<a href="/account">Account</a> | 
+			<a href="/">Home</a> |
+			<a href="/account">Account</a> |
+      <% if (admins.LIST.indexOf(user.emails[0].value) >= 0) { %>
+			   <a href="/admin">Admin</a> |
+      <% } %>
+			<a href="/ideas">Ideas</a> |
+			<a href="/processes">Process</a> |
 			<a href="/logout">Log Out</a>
 			</p>
 		<% } %>

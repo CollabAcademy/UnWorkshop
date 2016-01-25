@@ -34,3 +34,5 @@ node_modules
 
 #cedentials
 creds.js
+#admins
+admins.js

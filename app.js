@@ -7,7 +7,7 @@ var methodOverride = require('method-override');
 var GitHubStrategy = require('passport-github2').Strategy;
 var partials = require('express-partials');
 var creds = require('./creds.js');
-
+var admins = require('./admins.js')
 var GITHUB_CLIENT_ID = creds.GITHUB_CLIENT_ID;
 var GITHUB_CLIENT_SECRET = creds.GITHUB_CLIENT_SECRET;
 
@@ -49,9 +49,6 @@ passport.use(new GitHubStrategy({
   }
 ));
 
-
-
-
 var app = express();
 
 // configure Express
@@ -70,17 +67,29 @@ app.use(express.static(__dirname + '/public'));
 
 
 app.get('/', function(req, res){
-  res.render('index', { user: req.user });
+  res.render('index', { user: req.user, admins: admins });
 });
 
 app.get('/account', ensureAuthenticated, function(req, res){
-  res.render('account', { user: req.user });
+  res.render('account', { user: req.user, admins: admins });
 });
 
 app.get('/login', function(req, res){
-  res.render('login', { user: req.user });
+  res.render('login', { user: req.user, admins: admins});
 });
 
+app.get('/ideas', function(req, res, next) {
+  if(!req.user){res.redirect('/');}
+  res.render('ideas', { user: req.user, admins: admins });
+});
+
+app.post('/ideas', function(req, res, next) {
+  if(!req.user){res.redirect('/');}
+  data = {}
+  data.idea = req.body
+  data.user = { name: req.user.username, email: req.user.emails[0].value}
+  res.json(data);
+});
 // GET /auth/github
 //   Use passport.authenticate() as route middleware to authenticate the
 //   request.  The first step in GitHub authentication will involve redirecting

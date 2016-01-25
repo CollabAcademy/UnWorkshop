@@ -1,23 +1,23 @@
 # 2016-MIT-IAP-PrototypeJam UnWorkshop
 An Online Participatory Tool for the 2016 IAP PrototypeJam
- http://collabacademy.github.io/UnWorkshop 
+ http://collabacademy.github.io/UnWorkshop
 
 ## What is this?
   **For Mass Participatory Ideation, Prioritization & Decision Making**
 
 A tool/framework to help you gather, filter, choose and decide what to work on from a vast set of ideas.  
 
-This tool in intended to enable large groups and entire populations to self-organize, self-govern and self-start the innovative: 
-* production of new products, 
-* deployment of new services, 
+This tool in intended to enable large groups and entire populations to self-organize, self-govern and self-start the innovative:
+* production of new products,
+* deployment of new services,
 * launch of new ventures and/or
 * creation of other new value
 
-# Initial Reference Implementation: 
+# Initial Reference Implementation:
 
-**Goal: Invent & Launch Innovative MIT/Law Spring Blockchain Project** 
+**Goal: Invent & Launch Innovative MIT/Law Spring Blockchain Project**
 * Method: Recursive rounds of ideation and prioritization which produce by design the deployment of innovative new value
-* Mechanism: Online participants generate a new innovative project though several rounds of ideation and decision.   Each proposal or other contribution should have an equal opportunity to be considered and advanved to the next round.  A webform and other actions (sliders, selectors, etc) can enable simulteneous proposal of ideas followed immediately be simulteneous rating of each idea by a statistically significant number and cross-section of the population. 
+* Mechanism: Online participants generate a new innovative project though several rounds of ideation and decision.   Each proposal or other contribution should have an equal opportunity to be considered and advanved to the next round.  A webform and other actions (sliders, selectors, etc) can enable simulteneous proposal of ideas followed immediately be simulteneous rating of each idea by a statistically significant number and cross-section of the population.
 
 ## ROUND ONE: WHAT
 **Ask: What do you want to be hacking?**
@@ -58,10 +58,8 @@ git clone https://github.com/CollabAcademy/UnWorkshop
 cd UnWorkshop
 npm install
 ```
-- Open the file `sample_creds.js`
+- Create a copy of `sample_creds.js`, in the same directory name it `creds.js`
 - Fill in your github dev credentials (https://github.com/settings/developers)
-- Rename the file to `creds.js`
-
 ```
 node app.js
 ```

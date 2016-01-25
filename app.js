@@ -72,6 +72,7 @@ var github = new GitHubApi({
 
 // ===== initialize app
 var app = express();
+app.set('port', (process.env.PORT || 5000));
 
 // ===== configure Express
 app.set('views', __dirname + '/views');

@@ -50,7 +50,8 @@ Note: This will evolve :)
 
 ### How to run the application
 Prerequisites:
-- Setup node and npm
+- Setup node and npm - https://nodejs.org/en/
+- Get Github dev credentials - https://github.com/settings/developers
 
 Setup
 ```
@@ -58,8 +59,14 @@ git clone https://github.com/CollabAcademy/UnWorkshop
 cd UnWorkshop
 npm install
 ```
-- Create a copy of `sample_creds.js`, in the same directory name it `creds.js`
-- Fill in your github dev credentials (https://github.com/settings/developers)
+- Export ENVIRONMENT variables (on heroku https://devcenter.heroku.com/articles/config-vars#setting-up-config-vars-for-a-deployed-application)
+```
+export ADMIN_ROUND_ONE=<email of the admin authorized for round 1>
+export ADMIN_ROUND_TWO=<email of the admin authorized for round 2>
+export GITHUB_CLIENT_ID=<your GITHUB_CLIENT_ID>
+export GITHUB_CLIENT_SECRET=<your GITHUB_CLIENT_SECRET>
+```
+- Run the app
 ```
 node app.js
 ```

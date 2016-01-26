@@ -9,14 +9,17 @@ var partials = require('express-partials');
 var creds = require('./creds.js');
 var admins = require('./admins.js')
 
-// ===== Githib dev config
+// ===== config vars
 var GITHUB_CLIENT_ID = process.env.GITHUB_CLIENT_ID;
 var GITHUB_CLIENT_SECRET = process.env.GITHUB_CLIENT_SECRET;
+var GOOGLE_CLIENT_ID = process.env.GOOGLE_CLIENT_ID;
+var GOOGLE_CLIENT_SECRET = process.env.GOOGLE_CLIENT_SECRET;
 var HOST = process.env.HOST;
 
-// ===== login using Github OAuth2 =>https://github.com/cfsghost/passport-github
+// ===== login OAuth2 =>https://github.com/cfsghost/passport-github
 var passport = require('passport');
 var GitHubStrategy = require('passport-github2').Strategy;
+var GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
 
 // Passport session setup.
 passport.serializeUser(function(user, done) {
@@ -37,11 +40,18 @@ passport.use(new GitHubStrategy({
   function(accessToken, refreshToken, profile, done) {
     // asynchronous verification, for effect...
     process.nextTick(function () {
+      return done(null, profile);
+    });
+  }
+));
 
-      // To keep the example simple, the user's GitHub profile is returned to
-      // represent the logged-in user.  In a typical application, you would want
-      // to associate the GitHub account with a user record in your database,
-      // and return that user instead.
+passport.use(new GoogleStrategy({
+    clientID: GOOGLE_CLIENT_ID,
+    clientSecret: GOOGLE_CLIENT_SECRET,
+    callbackURL: HOST+"/auth/google/callback"
+  },
+  function(accessToken, refreshToken, profile, done) {
+    process.nextTick(function () {
       return done(null, profile);
     });
   }
@@ -159,6 +169,7 @@ app.get('/', function(req, res){
 
 // GET /login
 app.get('/login', function(req, res){
+  if(req.user){res.redirect('/');}
   res.render('login', { user: req.user, admins: admins});
 });
 
@@ -170,9 +181,26 @@ app.get('/auth/github',
     // function will not be called.
   });
 
+// GET /auth/google
+app.get('/auth/google',
+  passport.authenticate('google', { scope: [
+    'https://www.googleapis.com/auth/plus.login',
+    'https://www.googleapis.com/auth/plus.profile.emails.read' ] }),
+  function(req, res){
+    // The request will be redirected to Google for authentication, so this
+    // function will not be called.
+  });
+
 // GET /auth/github/callback
 app.get('/auth/github/callback',
   passport.authenticate('github', { failureRedirect: '/login' }),
+  function(req, res) {
+    res.redirect('/account');
+  });
+
+// GET /auth/google/callback
+app.get('/auth/google/callback',
+  passport.authenticate('google', { failureRedirect: '/login' }),
   function(req, res) {
     res.redirect('/account');
   });

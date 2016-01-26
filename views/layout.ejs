@@ -2,26 +2,27 @@
 <html>
 	<head>
 		<title>UnWorkshop</title>
+    <link rel="stylesheet" href="/css/uikit.almost-flat.min.css" />
+    <script src="/js/uikit.min.js"></script>
 	</head>
 	<body>
-		<% if (!user) { %>
-			<p>
-			<a href="/">Home</a> |
-			<a href="/login">Log In</a>
-			</p>
-		<% } else { %>
-			<p>
-			<a href="/">Home</a> |
-			<a href="/account">Account</a> |
-      <% if (admins.LIST.indexOf(user.emails[0].value) >= 0) { %>
-			   <a href="/admin">Admin</a> |
-      <% } %>
-			<a href="/ideas">Ideas</a> |
-			<a href="/methods">Methods</a> |
-			<a href="/milestones">Milestones</a> |
-			<a href="/logout">Log Out</a>
-			</p>
-		<% } %>
+    <nav class="uk-navbar">
+      <ul class="uk-navbar-nav">
+          <li><a href="/">Home</a></li>
+          <li><a href="/ideas">Ideas</a></li>
+          <li><a href="/methods">Methods</a></li>
+          <li><a href="/milestones">Milestones</a></li>
+        <% if (!user) { %>
+          <li><a href="/login">Login</a></li>
+    		<% } else { %>
+          <% if (is_admin) { %>
+    			  <li><a href="/admin">Admin</a></li>
+          <% } %>
+    			<li><a href="/account">Account</a></li>
+    			<li><a href="/logout">Log Out</a></li>
+    		<% } %>
+      </ul>
+    </nav>
 		<%- body %>
 	</body>
 </html>

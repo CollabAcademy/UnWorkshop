@@ -104,27 +104,48 @@ app.use(passport.initialize());
 app.use(passport.session());
 app.use(express.static(__dirname + '/public'));
 
-// ===== Get everyone on the same page
-var STAGE = {
-  not_ready: 0,
-  prepare: 1, //show only landing page
-  start: 2, //allow login, show user details from github maybe?
+// ===== app.locals and req.locals (middleware)
+app.locals = {
+  admins : admins,
+  STAGE : [
+    'not_ready', // show only landing page
+    'home', // allow login
+    'gather_idea', // allow idea submission
+    'rate_idea', // allow rating of ideas
+    'filter_idea', // allow idea filter only by admin
+    'gather_methods', // allow method submission
+    'rate_methods', // allow rating of methods
+    'filter_methods', // allow methods filter only by admin
+    'gather_milestones', // allow milestone submission
+    'rate_milestones', // allow rating of milestones
+    'filter_milestones', // allow milestones filter only by admin
+    'end' // show summary
+  ],
+  STAGE_DESCRIPTION : {
+    not_ready: 'shows only landing page',
+    home: 'allows login',
+    gather_idea: 'allows idea submission',
+    rate_idea: 'allows rating of ideas',
+    filter_idea: 'allows idea filter only by admin',
+    gather_methods: 'allows method submission',
+    rate_methods: 'allows rating of methods',
+    filter_methods: 'allows methods filter only by admin',
+    gather_milestones: 'allows milestone submission',
+    rate_milestones: 'allows rating of milestones',
+    filter_milestones: 'allows milestones filter only by admin'
+  },
+  _stage : 0
+};
 
-  gather_ideas: 3, //show form, allow only idea submission
-  rate_ideas: 4, //show all ideas collected, allow rating
-  choose_idea: 5, //show ideas in a sorted manner, only admin can choose
+app.use(function res_locals(req, res, next) {
+  res.locals = {
+    user: req.user,
+    is_admin: (req.user) ? (req.app.locals.admins.LIST.indexOf(req.user.emails[0].value) >= 0) : false
+  };
+  return next();
+});
 
-  gather_methods: 6, //show form, allow only process submission
-  rate_methods: 7, //show all ideas collected, allow rating
-  choose_methods: 8, //show process in a sorted manner, only admin can choose
-
-  gather_milestones: 9, //show form, allow only milestone submission
-  choose_milestones: 10, //show all proposed milestones, only admins and choose
-
-  finish: 11 //make the summary available to all
-}
-
-var _stage = STAGE.not_ready;
+// ===== Get everyone on the same page (middleware)
 
 app.use(function same_page(req, res, next) {
   switch (req.originalUrl) {
@@ -152,19 +173,20 @@ function make_url(url){
 
 // GET /
 app.get('/', function(req, res){
-  res.json({
-    message: 'I recommend using the plugin below to see a beautified version of this json response',
-    plugin: {
-      chrome: 'https://chrome.google.com/webstore/detail/jsonview/chklaanhfefbnpoihckbnefhakgolnmc',
-      firefox: 'https://addons.mozilla.org/en-us/firefox/addon/jsonview/'
-    },
-    todo: 'this is the landing page, describe the project, show links to the login, logout and profile if logged-in, and links to ideas/methods/milestones',
-    login: make_url('/login'),
-    account: make_url('/account'),
-    ideas: make_url('/ideas'),
-    methods: make_url('/methods'),
-    milestones: make_url('/milestones')
-  });
+  // res.json({
+  //   message: 'I recommend using the plugin below to see a beautified version of this json response',
+  //   plugin: {
+  //     chrome: 'https://chrome.google.com/webstore/detail/jsonview/chklaanhfefbnpoihckbnefhakgolnmc',
+  //     firefox: 'https://addons.mozilla.org/en-us/firefox/addon/jsonview/'
+  //   },
+  //   todo: 'this is the landing page, describe the project, show links to the login, logout and profile if logged-in, and links to ideas/methods/milestones',
+  //   login: make_url('/login'),
+  //   account: make_url('/account'),
+  //   ideas: make_url('/ideas'),
+  //   methods: make_url('/methods'),
+  //   milestones: make_url('/milestones')
+  // });
+  res.render('index');
 });
 
 // GET /login
@@ -216,48 +238,36 @@ app.get('/logout',
 app.get('/account',
   ensureAuthenticated,
   function(req, res){
-    res.render('account', { user: req.user, admins: admins });
+    res.render('account');
   });
 
 // GET /admin
 app.get('/admin',
   ensureAuthenticated,
   function(req, res, next){
-    res.json({message: 'todo'})
+    res.render('admin');
+  });
+
+app.post('/admin/stage',
+  ensureAuthenticated,
+  function(req, res, next){
+    req.app.locals._stage = Number(req.body.stage);
+    res.redirect('/admin')
   });
 
 // GET /ideas
 app.get('/ideas',
-  function(req, res, next) {
-    res.json({
-      todo: 'describe the scenario/context? show links to create an idea, list all ideas, rate ideas and show the choosen idea depending on what stage we are in'
-    });
-  });
-
-// GET /ideas/create
-app.get('/ideas/create',
   ensureAuthenticated,
   function(req, res, next) {
-    res.json({
-      todo: 'show a form to create an idea'
-    })
+    res.render('ideas');
   });
 
-// POST /ideas/create
-app.post('/ideas/create',
+// POST /ideas
+app.post('/ideas',
   ensureAuthenticated,
   function(req, res, next) {
     res.json({
       todo: 'receives the proposed idea, commits it to the ideas directory in the git repository, shows success message'
-    })
-  });
-
-// GET /ideas/all
-app.get('/ideas/all',
-  ensureAuthenticated,
-  function(req, res, next) {
-    res.json({
-      todo: 'shows all the proposed ideas, allows rating depending on the stage we are in'
     })
   });
 

@@ -1,11 +1,24 @@
-<form action="/ideas" method="post">
-  Title:<br>
-  <input type="text" name="title" value="title">
-  <br>
-  Last name:<br>
-  <input type="textarea" name="blurb" value="description"><br>
-  Success Mertrics:<br>
-  <input type="textarea" name="succcess_metrics" value="">
-  <br><br>
-  <input type="submit" value="Submit">
-</form>
+<div class="">
+  <div class="">
+    <h2>Have an idea?</h2>
+  </div>
+  <div class="">
+    <form action="/ideas" method="post">
+      <div class="">
+        <input type="text" name="title" placeholder='Title'>
+      </div>
+      <div class="">
+        <textarea name="blurb" rows="8" placeholder='Blurb' cols="40"></textarea>
+      </div>
+      <div class="">
+        <textarea name="success_metrics" placeholder='Success Metrics' rows="8" cols="40"></textarea>
+      </div>
+      <div class="">
+        <input type="submit" value="Submit">
+      </div>
+    </form>
+  </div>
+  <div class="">
+    <h2>Ideas</h2>
+  </div>
+</div>

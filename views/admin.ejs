@@ -1,0 +1,60 @@
+<div class="">
+  <div class="uk-block">
+    <h3>Stages</h3>
+    <div class="">
+      <table>
+        <th>
+          #
+        </th>
+        <th>
+          Stage
+        </th>
+        <th>
+          Description
+        </th>
+        <% for(var i=0; i<STAGE.length; i++) {%>
+          <tr>
+            <td>
+              <%= i %>
+            </td>
+            <td>
+              <%= STAGE[i] %>
+            </td>
+            <td>
+              <%= STAGE_DESCRIPTION[STAGE[i]] %>
+            </td>
+          </tr>
+        <% } %>
+      </table>
+    </div>
+  </div>
+
+  <div class="uk-block">
+    <h3>Select Stage</h3>
+    <div class="">
+      # : <%= _stage %>
+    </div>
+
+    <div class="">
+      name : <%= STAGE[_stage] %>
+    </div>
+
+    <div class="">
+      <% if (_stage > 0) {%>
+        <form class="" action="/admin/stage" method="post">
+          <input type="hidden" name="stage" value="<%= _stage - 1%>">
+          <input type="submit" value="Prev">
+        </form>
+      <% } %>
+    </div>
+
+    <div class="">
+      <% if (_stage < STAGE.length - 1) {%>
+        <form class="" action="/admin/stage" method="post">
+          <input type="hidden" name="stage" value="<%= _stage + 1%>">
+          <input type="submit" value="Next">
+        </form>
+      <% } %>
+    </div>
+  </div>
+</div>

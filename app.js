@@ -300,6 +300,7 @@ app.post('/ideas/filter',
 
 // GET /methods
 app.get('/methods',
+  ensureAuthenticated,
   function(req, res, next) {
     res.json({
       todo: 'describe what a method is? show links to propose a method, list all methods, rate methods and show the filtered methods depending on what stage we are in'
@@ -362,7 +363,7 @@ app.post('/methods/filter',
 
 // GET /milestones
 app.get('/milestones',
-  // ensureAuthenticated,
+  ensureAuthenticated,
   function(req, res, next) {
     res.json({
       todo: 'show links to create a milestone, show all milestones, rate milestones and show the filtered milestones'

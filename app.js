@@ -135,10 +135,8 @@ app.use(function same_page(req, res, next) {
   }
 });
 
-function make_url(req, url){
-  protocol = req.protocol;
-  host = HOST
-  return protocol? protocol+'://'+host+url : host+url
+function make_url(url){
+  return HOST+url
 }
 // ===== routes
 
@@ -151,11 +149,11 @@ app.get('/', function(req, res){
       firefox: 'https://addons.mozilla.org/en-us/firefox/addon/jsonview/'
     },
     todo: 'this is the landing page, describe the project, show links to the login, logout and profile if logged-in, and links to ideas/methods/milestones',
-    login: make_url(req, '/login'),
-    account: make_url(req, '/account'),
-    ideas: make_url(req, '/ideas'),
-    methods: make_url(req, '/methods'),
-    milestones: make_url(req, '/milestones')
+    login: make_url('/login'),
+    account: make_url('/account'),
+    ideas: make_url('/ideas'),
+    methods: make_url('/methods'),
+    milestones: make_url('/milestones')
   });
 });
 

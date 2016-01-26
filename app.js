@@ -6,17 +6,6 @@ var methodOverride = require('method-override');
 var partials = require('express-partials');
 var pg = require('pg');
 
-pg.connect(process.env.DATABASE_URL, '?ssl=true', function(err, client) {
-  if (err) throw err;
-  console.log('Connected to postgres! Getting schemas...');
-
-  client
-    .query('SELECT table_schema,table_name FROM information_schema.tables;')
-    .on('row', function(row) {
-      console.log(JSON.stringify(row));
-    });
-});
-
 // ===== config files, values need to be updated by the admin
 var creds = require('./creds.js');
 var admins = require('./admins.js')

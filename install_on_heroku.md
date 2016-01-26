@@ -3,7 +3,7 @@ Download and Install the Heroku toolbelt: https://toolbelt.heroku.com/
 heroku login
 git clone https://github.com/CollabAcademy/UnWorkshop.git
 cd UnWorkshop
-heroku create <name_your_app> *remember this
+heroku create <name_your_app> # remember this
 ```
 - Create github dev creds - https://github.com/settings/developers
 - Register new app
@@ -18,7 +18,8 @@ heroku config:set GITHUB_CLIENT_ID=<GITHUB_CLIENT_ID> GITHUB_CLIENT_SECRET=<GITH
 ```
 
 - Create google dev creds - https://console.developers.google.com
-- Under `Explore other services`
+- Create a new project in the top menu (`Create new project`)
+- Under `Explore other services` 
   - Enable APIs and get credentials like keys
   - Credentials
   - New Credentials

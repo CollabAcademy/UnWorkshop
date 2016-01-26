@@ -12,6 +12,7 @@ var admins = require('./admins.js')
 // ===== Githib dev config
 var GITHUB_CLIENT_ID = process.env.GITHUB_CLIENT_ID;
 var GITHUB_CLIENT_SECRET = process.env.GITHUB_CLIENT_SECRET;
+var HOST = process.env.HOST;
 
 // ===== login using Github OAuth2 =>https://github.com/cfsghost/passport-github
 var passport = require('passport');
@@ -31,7 +32,7 @@ passport.deserializeUser(function(obj, done) {
 passport.use(new GitHubStrategy({
     clientID: GITHUB_CLIENT_ID,
     clientSecret: GITHUB_CLIENT_SECRET,
-    callbackURL: "http://127.0.0.1:3000/auth/github/callback"
+    callbackURL: HOST+"/auth/github/callback"
   },
   function(accessToken, refreshToken, profile, done) {
     // asynchronous verification, for effect...
@@ -134,6 +135,11 @@ app.use(function same_page(req, res, next) {
   }
 });
 
+function make_url(req, url){
+  protocol = req.protocol;
+  host = HOST
+  return protocol? protocol+'://'+host+url : host+url
+}
 // ===== routes
 
 // GET /
@@ -145,11 +151,11 @@ app.get('/', function(req, res){
       firefox: 'https://addons.mozilla.org/en-us/firefox/addon/jsonview/'
     },
     todo: 'this is the landing page, describe the project, show links to the login, logout and profile if logged-in, and links to ideas/methods/milestones',
-    login: 'http://localhost:3000/login',
-    account: 'http://localhost:3000/account',
-    ideas: 'http://localhost:3000/ideas',
-    methods: 'http://localhost:3000/methods',
-    milestones: 'http://localhost:3000/milestones'
+    login: make_url(req, '/login'),
+    account: make_url(req, '/account'),
+    ideas: make_url(req, '/ideas'),
+    methods: make_url(req, '/methods'),
+    milestones: make_url(req, '/milestones')
   });
 });
 
@@ -327,4 +333,4 @@ app.get('/milestones',
     });
   });
 
-app.listen((process.env.PORT || 5000));
+app.listen((process.env.PORT || 3000));

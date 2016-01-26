@@ -51,7 +51,7 @@ Note: This will evolve :)
 ### How to run the application
 Prerequisites:
 - Setup node and npm - https://nodejs.org/en/
-- Get Github dev credentials - https://github.com/settings/developers
+- Get Github dev credentials/authorize app on github - https://github.com/settings/developers
 
 Setup
 ```
@@ -65,6 +65,8 @@ export ADMIN_ROUND_ONE=<email of the admin authorized for round 1>
 export ADMIN_ROUND_TWO=<email of the admin authorized for round 2>
 export GITHUB_CLIENT_ID=<your GITHUB_CLIENT_ID>
 export GITHUB_CLIENT_SECRET=<your GITHUB_CLIENT_SECRET>
+export HOST=http://localhost:3000 (on localhost)
+export HOST=https://unworkshop.herokuapp.com (on heroku, use the app name you created, make sure this matches the host of the callback url set in the github developer app config)
 ```
 - Run the app
 ```

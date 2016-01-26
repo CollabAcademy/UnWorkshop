@@ -1,10 +1,17 @@
-```
+# Install heroku on your computer
 Download and Install the Heroku toolbelt: https://toolbelt.heroku.com/
+
+```
 heroku login
 git clone https://github.com/CollabAcademy/UnWorkshop.git
 cd UnWorkshop
 heroku create <name_your_app> # remember this
 ```
+
+# Get credentials to login with Github and Google
+
+## Github credentials
+
 - Create github dev creds - https://github.com/settings/developers
 - Register new app
   app name : (you could get creative),
@@ -12,11 +19,12 @@ heroku create <name_your_app> # remember this
   description : An Online Participatory Tool for the 2016 IAP PrototypeJam,
   https://<do_you_still_remember>.herokuapp.com/auth/github/callback
 - Register
-
+- In your terminal, 
 ```
 heroku config:set GITHUB_CLIENT_ID=<GITHUB_CLIENT_ID> GITHUB_CLIENT_SECRET=<GITHUB_CLIENT_SECRET>
 ```
 
+## Google credentials
 - Create google dev creds - https://console.developers.google.com
 - Create a new project in the top menu (`Create new project`)
 - Under `Explore other services` 

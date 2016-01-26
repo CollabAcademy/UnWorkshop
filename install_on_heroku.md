@@ -1,9 +1,11 @@
+# Fork this repository
+
 # Install heroku on your computer
 Download and Install the Heroku toolbelt: https://toolbelt.heroku.com/
 
 ```
 heroku login
-git clone https://github.com/CollabAcademy/UnWorkshop.git
+git clone <your_forked_repository> UnWorkshop # original repo: https://github.com/CollabAcademy/UnWorkshop.git
 cd UnWorkshop
 heroku create <name_your_app> # remember this
 ```

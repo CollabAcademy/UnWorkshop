@@ -27,15 +27,15 @@ heroku config:set GITHUB_CLIENT_ID=<GITHUB_CLIENT_ID> GITHUB_CLIENT_SECRET=<GITH
   - Web application
   - Name: get creative
   - Authorized JavaScript origins
-    https://<heroku_app_name>.herokuapp.com
+    https://`<heroku_app_name>`.herokuapp.com
     http://localhost:3000
   - Authorized redirect URIs
-    https://<heroku_app_name>.herokuapp.com/auth/google/callback
+    https://`<heroku_app_name>`.herokuapp.com/auth/google/callback
     http://localhost:3000/auth/google/callback
   - Create
 ```
 heroku config:set GOOGLE_CLIENT_ID=<GOOGLE_CLIENT_ID> GOOGLE_CLIENT_SECRET=<GOOGLE_CLIENT_SECRET>
-heroku config:set HOST=https://unworkshop.herokuapp.com
+heroku config:set HOST=https://<heroku_app_name>.herokuapp.com
 heroku config:set ADMIN_ROUND_ONE=<email of the admin authorized for round 1>
 heroku config:set ADMIN_ROUND_TWO=<email of the admin authorized for round 2>
 ```

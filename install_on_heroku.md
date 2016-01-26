@@ -17,7 +17,7 @@ heroku create <name_your_app> # remember this
   app name : (you could get creative),
   homepage : (https://github.com/CollabAcademy/UnWorkshop) works for now,
   description : An Online Participatory Tool for the 2016 IAP PrototypeJam,
-  https://<do_you_still_remember>.herokuapp.com/auth/github/callback
+  https://`<do_you_still_remember>`.herokuapp.com/auth/github/callback
 - Register
 - In your terminal, 
 ```
@@ -25,11 +25,10 @@ heroku config:set GITHUB_CLIENT_ID=<GITHUB_CLIENT_ID> GITHUB_CLIENT_SECRET=<GITH
 ```
 
 ## Google credentials
-- Create google dev creds - https://console.developers.google.com
+- Access the Google Developers panel: https://console.developers.google.com
 - Create a new project in the top menu (`Create new project`)
-- Under `Explore other services` 
-  - Enable APIs and get credentials like keys
-  - Credentials
+- Under `Overview` (left menu), make sure to activate the Google+ API. (If it still doesn't work, try adding Gmail as well.)
+- Under `Credentials`
   - New Credentials
   - OAuth Client ID
   - Web application

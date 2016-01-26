@@ -1,5 +1,7 @@
 # Fork this repository
 
+Fork this repository.
+
 # Install heroku on your computer
 Download and Install the Heroku toolbelt: https://toolbelt.heroku.com/
 

@@ -4,18 +4,7 @@ var session = require('express-session');
 var bodyParser = require('body-parser');
 var methodOverride = require('method-override');
 var partials = require('express-partials');
-var pg = require('pg');
-
-pg.connect(process.env.DATABASE_URL + '?ssl=true', function(err, client) {
-  if (err) throw err;
-  console.log('Connected to postgres! Getting schemas...');
-
-  client
-    .query('SELECT table_schema,table_name FROM information_schema.tables;')
-    .on('row', function(row) {
-      console.log(JSON.stringify(row));
-    });
-});
+var db = require('./models');
 
 
 // ===== config files, values need to be updated by the admin
@@ -373,4 +362,10 @@ app.post('/milestones/filter',
     })
   });
 
-app.listen((process.env.PORT || 3000));
+// app.listen((process.env.PORT || 3000));
+
+db.sequelize.sync().then(function() {
+  app.listen( (process.env.PORT || 3000) , function(){
+    console.log('Express server listening on port ' + (process.env.PORT || 3000));
+  });
+});

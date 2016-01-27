@@ -49,8 +49,6 @@ Note: This will evolve :)
 
 
 ### How to run the application
-<<<<<<< HEAD
-=======
 
 On Heroku: https://github.com/CollabAcademy/UnWorkshop/blob/master/install_on_heroku.md
 

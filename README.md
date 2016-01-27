@@ -49,6 +49,17 @@ Note: This will evolve :)
 
 
 ### How to run the application
+<<<<<<< HEAD
+=======
+
+On Heroku: https://github.com/CollabAcademy/UnWorkshop/blob/master/install_on_heroku.md
+
+On local: Follow the below steps
+
+Prerequisites:
+- Setup node and npm - https://nodejs.org/en/
+- Get Github dev credentials/authorize app on github - https://github.com/settings/developers
+>>>>>>> master
 
 #### Pre-requisites:
 - Setup node and npm in your computer: https://nodejs.org/en/
@@ -97,4 +108,3 @@ Then, start heroku. The default address is localhost:5000, but there are more op
  # Start heroku
  heroku local
 ```
-

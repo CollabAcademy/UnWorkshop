@@ -6,7 +6,6 @@ var methodOverride = require('method-override');
 var partials = require('express-partials');
 var db = require('./models');
 
-
 // ===== config files, values need to be updated by the admin
 var creds = require('./creds.js');
 var admins = require('./admins.js')
@@ -185,15 +184,29 @@ app.get('/auth/google',
 // GET /auth/github/callback
 app.get('/auth/github/callback',
   passport.authenticate('github', { failureRedirect: '/login' }),
-  function(req, res) {
-    res.redirect('/account');
+  function(req, res, next) {
+    var user = req.user;
+    if(user){
+      db.User.create({ name: user.displayName, email: user.emails[0].value});
+      res.redirect('/account');
+    }
+    else{
+      res.redirect('/login');
+    }
   });
 
 // GET /auth/google/callback
 app.get('/auth/google/callback',
   passport.authenticate('google', { failureRedirect: '/login' }),
-  function(req, res) {
-    res.redirect('/account');
+  function(req, res, next) {
+    var user = req.user;
+    if(user){
+      db.User.create({ name: user.displayName, email: user.emails[0].value}).error();
+      res.redirect('/account');
+    }
+    else{
+      res.redirect('/login');
+    }
   });
 
 // GET /logout
@@ -214,7 +227,10 @@ app.get('/account',
 app.get('/admin',
   ensureAuthenticated,
   function(req, res, next){
-    res.render('admin');
+    if(req.local.is_admin)
+      res.render('admin');
+    else
+      res.redirect('/');
   });
 
 app.post('/admin/stage',
@@ -247,18 +263,23 @@ app.get('/ideas',
 app.post('/ideas',
   ensureAuthenticated,
   function(req, res, next) {
-    res.json({
-      todo: 'receives the proposed idea, commits it to the ideas directory in the git repository, shows success message'
+    db.Idea.create({
+      title: req.body.title,
+      blurb: req.body.blurb,
+      success_mertic: req.body.success_mertic
     })
+    .then(res.redirect('/ideas', {gather: true}));
   });
 
 // POST /ideas/rating
 app.post('/ideas/rate',
   ensureAuthenticated,
   function(req, res, next) {
-    res.json({
-      todo: 'receives the rating for a idea, store it locally before aggreagation'
-    })
+    db.IdeaRating.create({
+      idea_id: req.body.idea_id,
+      user_id: req.body.user_id,
+      rating: req.body.rating
+    }).then(res.redirect('/ideas', {rate: true}))
   });
 
 // POST /ideas/filter
@@ -289,22 +310,27 @@ app.get('/methods',
     }
   });
 
-// POST /methods/create
-app.post('/methods/create',
+// POST /methods
+app.post('/methods',
   ensureAuthenticated,
   function(req, res, next) {
-    res.json({
-      todo: 'database'
+    db.Method.create({
+      label: req.body.label,
+      tool: req.body.tool,
+      description: req.body.description
     })
+    .then(res.redirect('/methods', {gather: true}));
   });
 
 // POST /methods/rating
 app.post('/methods/rate',
   ensureAuthenticated,
   function(req, res, next) {
-    res.json({
-      todo: 'database'
-    })
+    db.MethodRating.create({
+      method_id: req.body.method_id,
+      user_id: req.body.user_id,
+      rating: req.body.rating
+    }).then(res.redirect('/methods', {rate: true}))
   });
 
 // POST /methods/filter
@@ -335,22 +361,27 @@ app.get('/milestones',
     }
   });
 
-// POST /milestones/create
-app.post('/milestones/create',
+// POST /milestones
+app.post('/milestones',
   ensureAuthenticated,
   function(req, res, next) {
-    res.json({
-      todo: 'database'
+    db.Milestone.create({
+      date: req.body.date,
+      milestone: req.body.milestone,
+      description: req.body.description
     })
+    .then(res.redirect('/milestones', {gather: true}));
   });
 
 // POST /milestones/rating
 app.post('/milestones/rate',
   ensureAuthenticated,
   function(req, res, next) {
-    res.json({
-      todo: 'database'
-    })
+    db.MilestoneRating.create({
+      milestone_id: req.body.milestone_id,
+      user_id: req.body.user_id,
+      rating: req.body.rating
+    }).then(res.redirect('/milestones', {rate: true}))
   });
 
 // POST /milestones/filter
@@ -362,8 +393,8 @@ app.post('/milestones/filter',
     })
   });
 
-// app.listen((process.env.PORT || 3000));
 
+// app.listen((process.env.PORT || 3000));
 db.sequelize.sync().then(function() {
   app.listen( (process.env.PORT || 3000) , function(){
     console.log('Express server listening on port ' + (process.env.PORT || 3000));

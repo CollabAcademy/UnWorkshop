@@ -6,6 +6,18 @@ var methodOverride = require('method-override');
 var partials = require('express-partials');
 var pg = require('pg');
 
+pg.connect(process.env.DATABASE_URL + '?ssl=true', function(err, client) {
+  if (err) throw err;
+  console.log('Connected to postgres! Getting schemas...');
+
+  client
+    .query('SELECT table_schema,table_name FROM information_schema.tables;')
+    .on('row', function(row) {
+      console.log(JSON.stringify(row));
+    });
+});
+
+
 // ===== config files, values need to be updated by the admin
 var creds = require('./creds.js');
 var admins = require('./admins.js')
@@ -108,9 +120,11 @@ app.use(express.static(__dirname + '/public'));
 // ===== app.locals and req.locals (middleware)
 app.locals = {
   admins : admins,
+  // db_init : function(){
+  //   pg.query('SELECT author FROM books WHERE name = $1', [book])
+  // },
   STAGE : [
-    'not_ready', // show only landing page
-    'home', // allow login
+    'register', // allow login
     'gather_idea', // allow idea submission
     'rate_idea', // allow rating of ideas
     'filter_idea', // allow idea filter only by admin
@@ -123,8 +137,7 @@ app.locals = {
     'end' // show summary
   ],
   STAGE_DESCRIPTION : {
-    not_ready: 'shows only landing page',
-    home: 'allows login',
+    register: 'allows login',
     gather_idea: 'allows idea submission',
     rate_idea: 'allows rating of ideas',
     filter_idea: 'allows idea filter only by admin',
@@ -146,27 +159,6 @@ app.use(function res_locals(req, res, next) {
   return next();
 });
 
-// ===== Get everyone on the same page (middleware)
-
-app.use(function same_page(req, res, next) {
-  switch (req.originalUrl) {
-    case '/':
-    case '/admin':
-    case '/login':
-    case '/logout':
-    case '/auth/github':
-    case '/auth/github/callback':
-    case '/account':
-      return next();
-    case '/ideas':
-    case '/methods':
-    case '/milestones':
-      return next();
-    default:
-      return next();
-  }
-});
-
 function make_url(url){
   return HOST+url
 }
@@ -174,19 +166,6 @@ function make_url(url){
 
 // GET /
 app.get('/', function(req, res){
-  // res.json({
-  //   message: 'I recommend using the plugin below to see a beautified version of this json response',
-  //   plugin: {
-  //     chrome: 'https://chrome.google.com/webstore/detail/jsonview/chklaanhfefbnpoihckbnefhakgolnmc',
-  //     firefox: 'https://addons.mozilla.org/en-us/firefox/addon/jsonview/'
-  //   },
-  //   todo: 'this is the landing page, describe the project, show links to the login, logout and profile if logged-in, and links to ideas/methods/milestones',
-  //   login: make_url('/login'),
-  //   account: make_url('/account'),
-  //   ideas: make_url('/ideas'),
-  //   methods: make_url('/methods'),
-  //   milestones: make_url('/milestones')
-  // });
   res.render('index');
 });
 
@@ -260,7 +239,19 @@ app.post('/admin/stage',
 app.get('/ideas',
   ensureAuthenticated,
   function(req, res, next) {
-    res.render('ideas');
+    switch (req.app.locals._stage) {
+      case 1:
+        res.render('ideas_form');
+        break;
+      case 2:
+        res.render('ideas_list', {rate: true, ideas: []});
+        break;
+      case 3:
+        res.render('ideas_list', {filter : true, ideas: []});
+        break;
+      default:
+        res.redirect('/');
+    }
   });
 
 // POST /ideas
@@ -281,15 +272,6 @@ app.post('/ideas/rate',
     })
   });
 
-// GET /ideas/filter
-app.get('/ideas/filter',
-  ensureAuthenticated,
-  function(req, res, next) {
-    res.json({
-      todo: 'shows all the proposed ideas along with the final rating, allows only the admin to make the choice'
-    })
-  });
-
 // POST /ideas/filter
 app.post('/ideas/filter',
   ensureAuthenticated,
@@ -303,18 +285,19 @@ app.post('/ideas/filter',
 app.get('/methods',
   ensureAuthenticated,
   function(req, res, next) {
-    res.json({
-      todo: 'describe what a method is? show links to propose a method, list all methods, rate methods and show the filtered methods depending on what stage we are in'
-    });
-  });
-
-// GET /methods/create
-app.get('/methods/create',
-  ensureAuthenticated,
-  function(req, res, next) {
-    res.json({
-      todo: 'shows a form to propose a method, fields- proposal, label, discription'
-    })
+    switch (req.app.locals._stage) {
+      case 4:
+        res.render('methods_form');
+        break;
+      case 5:
+        res.render('methods_list', {rate: true, methods: []});
+        break;
+      case 6:
+        res.render('methods_list', {filter : true, methods: []});
+        break;
+      default:
+        res.redirect('/');
+    }
   });
 
 // POST /methods/create
@@ -322,16 +305,7 @@ app.post('/methods/create',
   ensureAuthenticated,
   function(req, res, next) {
     res.json({
-      todo: 'receives the proposed method, commits it to the methods directory in the git repository, shows success message'
-    })
-  });
-
-// GET /methods/all
-app.get('/methods/all',
-  ensureAuthenticated,
-  function(req, res, next) {
-    res.json({
-      todo: 'shows all the proposed methods, allows rating depending on the stage we are in'
+      todo: 'database'
     })
   });
 
@@ -340,16 +314,7 @@ app.post('/methods/rate',
   ensureAuthenticated,
   function(req, res, next) {
     res.json({
-      todo: 'receives the rating for a method, store it locally before aggreagation'
-    })
-  });
-
-// GET /methods/filter
-app.get('/methods/filter',
-  ensureAuthenticated,
-  function(req, res, next) {
-    res.json({
-      todo: 'shows all the proposed methods along with the final rating, allows only the admin get to make the choices'
+      todo: 'database'
     })
   });
 
@@ -358,7 +323,7 @@ app.post('/methods/filter',
   ensureAuthenticated,
   function(req, res, next) {
     res.json({
-      todo: 'receives the filteres methods, add the proposal to the readme'
+      todo: 'database'
     })
   });
 
@@ -366,9 +331,46 @@ app.post('/methods/filter',
 app.get('/milestones',
   ensureAuthenticated,
   function(req, res, next) {
+    switch (req.app.locals._stage) {
+      case 7:
+        res.render('milestones_form');
+        break;
+      case 8:
+        res.render('milestones_list', {rate: true, milestones: []});
+        break;
+      case 9:
+        res.render('milestones_list', {filter : true, milestones: []});
+        break;
+      default:
+        res.redirect('/');
+    }
+  });
+
+// POST /milestones/create
+app.post('/milestones/create',
+  ensureAuthenticated,
+  function(req, res, next) {
     res.json({
-      todo: 'show links to create a milestone, show all milestones, rate milestones and show the filtered milestones'
-    });
+      todo: 'database'
+    })
+  });
+
+// POST /milestones/rating
+app.post('/milestones/rate',
+  ensureAuthenticated,
+  function(req, res, next) {
+    res.json({
+      todo: 'database'
+    })
+  });
+
+// POST /milestones/filter
+app.post('/milestones/filter',
+  ensureAuthenticated,
+  function(req, res, next) {
+    res.json({
+      todo: 'database'
+    })
   });
 
 app.listen((process.env.PORT || 3000));

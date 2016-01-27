@@ -10,7 +10,7 @@ if (!global.hasOwnProperty('db')) {
     host:     match[3],
     logging: false,
     dialectOptions: {
-      ssl: (process.env.HOST == 'http://localhost:3000') ? false : true;
+      ssl: (process.env.HOST == 'http://localhost:3000') ? false : true
     }
   });
 

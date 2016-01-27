@@ -49,6 +49,8 @@ Note: This will evolve :)
 
 
 ### How to run the application
+<<<<<<< HEAD
+=======
 
 On Heroku: https://github.com/CollabAcademy/UnWorkshop/blob/master/install_on_heroku.md
 
@@ -57,23 +59,52 @@ On local: Follow the below steps
 Prerequisites:
 - Setup node and npm - https://nodejs.org/en/
 - Get Github dev credentials/authorize app on github - https://github.com/settings/developers
+>>>>>>> master
 
-Setup
+#### Pre-requisites:
+- Setup node and npm in your computer: https://nodejs.org/en/
+- Get Github dev credentials/authorize app on github: https://github.com/settings/developers
+  - The default host is http://localhost:5000
+
+#### Setup
+
 ```
 git clone https://github.com/CollabAcademy/UnWorkshop
 cd UnWorkshop
 npm install
 ```
-- Export ENVIRONMENT variables (on heroku https://devcenter.heroku.com/articles/config-vars#setting-up-config-vars-for-a-deployed-application)
+
+Set ENVIRONMENT variables (heroku FAQ)[https://devcenter.heroku.com/articles/config-vars#setting-up-config-vars-for-a-deployed-application]
+
 ```
-export ADMIN_ROUND_ONE=<email of the admin authorized for round 1>
-export ADMIN_ROUND_TWO=<email of the admin authorized for round 2>
-export GITHUB_CLIENT_ID=<your GITHUB_CLIENT_ID>
-export GITHUB_CLIENT_SECRET=<your GITHUB_CLIENT_SECRET>
-export HOST=http://localhost:3000 (on localhost)
+ # Set local host
+ heroku config:set HOST=http://localhost:5000
 ```
-- Run the app
+
+If you are working in the same folder as the heroku remote application, just copy the same config variables.
 ```
-node app.js
+ # Copy config variables to .env file
+ # heroku config:get CONFIG-VAR-NAME -s  >> .env
+ heroku config:get ADMIN_ROUND_ONE -s  >> .env
+ heroku config:get ADMIN_ROUND_TWO -s  >> .env
+ heroku config:get GITHUB_CLIENT_ID -s  >> .env
+ heroku config:get GITHUB_CLIENT_SECRET -s  >> .env
+ heroku config:get GOOGLE_CLIENT_ID -s  >> .env
+ heroku config:get GOOGLE_CLIENT_SECRET -s  >> .env
+ heroku config:get HOST -s  >> .env
 ```
-- Visit http://localhost:3000
+
+If you are startig in a brand-new folder, just config the rest of the variables:
+```
+heroku config:set GOOGLE_CLIENT_ID=<GOOGLE_CLIENT_ID> GOOGLE_CLIENT_SECRET=<GOOGLE_CLIENT_SECRET>
+heroku config:set ADMIN_ROUND_ONE=<email of the admin authorized for round 1>
+heroku config:set ADMIN_ROUND_TWO=<email of the admin authorized for round 2>
+```
+
+Then, start heroku. The default address is localhost:5000, but there are more options in (Heroku's FAQ)[
+ More options i https://devcenter.heroku.com/articles/heroku-local#run-your-app-locally-using-the-heroku-local-command-line-tool-start-your-app-locally].
+
+```
+ # Start heroku
+ heroku local
+```

@@ -57,52 +57,40 @@ On local: Follow the below steps
 Prerequisites:
 - Setup node and npm - https://nodejs.org/en/
 - Get Github dev credentials/authorize app on github - https://github.com/settings/developers
->>>>>>> master
-
+- install Postgres database on your system - http://www.postgresql.org/
 #### Pre-requisites:
 - Setup node and npm in your computer: https://nodejs.org/en/
-- Get Github dev credentials/authorize app on github: https://github.com/settings/developers
+- Get Github dev credentials(Github OAuth2): https://github.com/settings/developers
   - The default host is http://localhost:5000
+- Get Google dev credentials(Google OAuth2) [https://console.developers.google.com/home/dashboard]
 
 #### Setup
-
 ```
 git clone https://github.com/CollabAcademy/UnWorkshop
 cd UnWorkshop
 npm install
 ```
-
-Set ENVIRONMENT variables (heroku FAQ)[https://devcenter.heroku.com/articles/config-vars#setting-up-config-vars-for-a-deployed-application]
-
+Set ENVIRONMENT variables
 ```
- # Set local host
- heroku config:set HOST=http://localhost:5000
+ export HOST = http://localhost:3000
+ export ADMIN_ROUND_ONE = <email_admin_1>
+ export ADMIN_ROUND_TWO = <email_admin_2>
+ export GITHUB_CLIENT_ID = <GITHUB_CLIENT_ID>
+ export GITHUB_CLIENT_SECRET = <GITHUB_CLIENT_SECRET>
+ export GOOGLE_CLIENT_ID = <GOOGLE_CLIENT_ID>
+ export GOOGLE_CLIENT_SECRET = <GOOGLE_CLIENT_SECRET>
+ export DATABASE_URL = postgres://user:password@host:port/database
 ```
-
-If you are working in the same folder as the heroku remote application, just copy the same config variables.
+- install dependancies
 ```
- # Copy config variables to .env file
- # heroku config:get CONFIG-VAR-NAME -s  >> .env
- heroku config:get ADMIN_ROUND_ONE -s  >> .env
- heroku config:get ADMIN_ROUND_TWO -s  >> .env
- heroku config:get GITHUB_CLIENT_ID -s  >> .env
- heroku config:get GITHUB_CLIENT_SECRET -s  >> .env
- heroku config:get GOOGLE_CLIENT_ID -s  >> .env
- heroku config:get GOOGLE_CLIENT_SECRET -s  >> .env
- heroku config:get HOST -s  >> .env
+ npm install
+ ./node_modules/.bin/sequelize db:migrate
+ node app.js
 ```
 
-If you are startig in a brand-new folder, just config the rest of the variables:
-```
-heroku config:set GOOGLE_CLIENT_ID=<GOOGLE_CLIENT_ID> GOOGLE_CLIENT_SECRET=<GOOGLE_CLIENT_SECRET>
-heroku config:set ADMIN_ROUND_ONE=<email of the admin authorized for round 1>
-heroku config:set ADMIN_ROUND_TWO=<email of the admin authorized for round 2>
-```
+Then, start heroku. The default address is localhost:5000, but there are more options in [Heroku's FAQ](https://devcenter.heroku.com/articles/heroku-local#run-your-app-locally-using-the-heroku-local-command-line-tool-start-your-app-locally).
 
-Then, start heroku. The default address is localhost:5000, but there are more options in (Heroku's FAQ)[
- More options i https://devcenter.heroku.com/articles/heroku-local#run-your-app-locally-using-the-heroku-local-command-line-tool-start-your-app-locally].
-
+- Start a app server locally
 ```
- # Start heroku
  heroku local
 ```

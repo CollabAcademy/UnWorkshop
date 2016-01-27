@@ -2,27 +2,50 @@
 <html>
 	<head>
 		<title>UnWorkshop</title>
+
+    <!-- Flat design -->
     <link rel="stylesheet" href="/css/uikit.almost-flat.min.css" />
-    <script src="/js/uikit.min.js"></script>
+
+    <!--Import Google Icon Font--> 
+    <link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"> 
+
+    <!--Import materialize css compiled and minified -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.5/css/materialize.min.css">
+    
+    <!--Import custom css -->
+    <link rel="stylesheet" href="css/style.css">
+    
+    <!--Let browser know website is optimized for mobile--> 
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
 	</head>
 	<body>
-    <nav class="uk-navbar">
-      <ul class="uk-navbar-nav">
-          <li><a href="/">Home</a></li>
-          <li><a href="/ideas">Ideas</a></li>
-          <li><a href="/methods">Methods</a></li>
-          <li><a href="/milestones">Milestones</a></li>
-        <% if (!user) { %>
-          <li><a href="/login">Login</a></li>
-    		<% } else { %>
-          <% if (is_admin) { %>
-    			  <li><a href="/admin">Admin</a></li>
-          <% } %>
-    			<li><a href="/account">Account</a></li>
-    			<li><a href="/logout">Log Out</a></li>
-    		<% } %>
-      </ul>
+    <nav class="light-blue lighten-1" role="navigation">
+      <div class="nav-wrapper">
+        <ul id="nav-mobile">
+            <li><a href="/">Home</a></li>
+            <li><a href="/ideas">Ideas</a></li>
+            <li><a href="/methods">Methods</a></li>
+            <li><a href="/milestones">Milestones</a></li>
+          <% if (!user) { %>
+            <li><a href="/login">Login</a></li>
+      		<% } else { %>
+            <% if (is_admin) { %>
+      			  <li><a href="/admin">Admin</a></li>
+            <% } %>
+      			<li><a href="/account">Account</a></li>
+      			<li><a href="/logout">Log Out</a></li>
+      		<% } %>
+        </ul>
+      </div>
     </nav>
 		<%- body %>
+
+
+    <!-- Import scripts -->
+    <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+    <script src="/js/uikit.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.5/js/materialize.min.js"></script>
+
 	</body>
 </html>

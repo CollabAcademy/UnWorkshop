@@ -1,4 +1,38 @@
-<div class="">
+<div class="container">
+  <!-- Current stage -->
+  <div class="uk-block">
+    <h3>Current Stage</h3>
+    <h4>Stage #: <%= _stage %>: <%= STAGE[_stage] %></h4>
+
+    <div class="row">
+      
+      <% if (_stage > 0) {%>
+        <div class="col">
+          <form class="" action="/admin/stage" method="post">
+            <input type="hidden" name="stage" value="<%= _stage - 1%>">
+            <button class="btn btn-lg btn-primary" type="submit">
+              <i class="material-icons left">skip_previous</i>
+              Prev
+            </button>
+          </form>
+        </div>
+      <% } %>
+      
+      <% if (_stage < STAGE.length - 1) {%>
+        <div class="col">
+          <form class="" action="/admin/stage" method="post">
+            <input type="hidden" name="stage" value="<%= _stage + 1%>">
+            <button class="btn btn-lg btn-primary" type="submit">
+              Next
+              <i class="material-icons right">skip_next</i>
+            </button>
+          </form>
+        </div>
+      <% } %>
+    </div>
+  </div>
+
+  <!-- Description of the stages -->
   <div class="uk-block">
     <h3>Stages</h3>
     <div class="">
@@ -29,32 +63,4 @@
     </div>
   </div>
 
-  <div class="uk-block">
-    <h3>Select Stage</h3>
-    <div class="">
-      # : <%= _stage %>
-    </div>
-
-    <div class="">
-      name : <%= STAGE[_stage] %>
-    </div>
-
-    <div class="">
-      <% if (_stage > 0) {%>
-        <form class="" action="/admin/stage" method="post">
-          <input type="hidden" name="stage" value="<%= _stage - 1%>">
-          <input type="submit" value="Prev">
-        </form>
-      <% } %>
-    </div>
-
-    <div class="">
-      <% if (_stage < STAGE.length - 1) {%>
-        <form class="" action="/admin/stage" method="post">
-          <input type="hidden" name="stage" value="<%= _stage + 1%>">
-          <input type="submit" value="Next">
-        </form>
-      <% } %>
-    </div>
-  </div>
 </div>

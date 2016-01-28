@@ -1,21 +1,30 @@
-<div class="">
-  <div class="">
-    <h2>Have an idea?</h2>
-  </div>
-  <div class="">
-    <form action="/methods" method="post">
-      <div class="">
-        <input type="text" name="label" placeholder='lable (framework/language/etc/..)'>
-      </div>
-      <div class="">
-        <input type="text" name="tool" placeholder='lable (RubyOnRails, Python)'>
-      </div>
-      <div class="">
-        <textarea name="description" placeholder='description' rows="8" cols="40"></textarea>
-      </div>
-      <div class="">
-        <input type="submit" value="Submit">
-      </div>
-    </form>
+<div class="section no-pad-bot" id="index-banner">
+  <div class="container">
+    <br /><br />
+    <h1 class="header center teal-text text-lighten-2"> Add a method </h1>
+    <div class="row center">
+      
+      <!-- Form to register a method -->
+      <form action="/methods" method="post" class="col s12">
+        <!-- Label -->
+        <div class="row">
+          <div class="input-field col s12">
+            <input id="project_label" name="project_label" type="text" />
+            <label for="project_label">Label (framework/language/etc.)</label>
+          </div>
+        </div>
+
+        <!-- Tool -->
+        <div class="row">
+          <div class="input-field col s12">
+            <input id="project_tool" name="project_tool" type="text" />
+            <label for="project_tool">Tool (RubyOnRails, Python etc.)</label>
+          </div>
+        </div>
+
+        <button class="btn btn-lg btn-primary" type="submit">Submit</button>
+      </form>
+      
+    </div>
   </div>
 </div>

@@ -1,18 +1,30 @@
-<div class="">
-  <div class="">
-    <h2>Have an idea?</h2>
-  </div>
-  <div class="">
-    <form action="/milestones" method="post">
-      <div class="">
-        <input type="date" name="date" placeholder='Date'>
-      </div>
-      <div class="">
-        <input type="text" name="milestone" placeholder='milestone'>
-      </div>
-      <div class="">
-        <input type="submit" value="Submit">
-      </div>
-    </form>
+<div class="section no-pad-bot" id="index-banner">
+  <div class="container">
+    <br /><br />
+    <h1 class="header center teal-text text-lighten-2"> Add a milestone </h1>
+    <div class="row center">
+      
+      <!-- Form to register a milestone -->
+      <form action="/milestones" method="post" class="col s12">
+        <!-- Date -->
+        <div class="row">
+          <div class="input-field col s12">
+            <input id="date" name="date" type="text" />
+            <label for="date">Date</label>
+          </div>
+        </div>
+
+        <!-- Milestone -->
+        <div class="row">
+          <div class="input-field col s12">
+            <input id="milestone" name="milestone" type="text" />
+            <label for="milestone">Milestone</label>
+          </div>
+        </div>
+    
+        <button class="btn btn-lg btn-primary" type="submit">Submit</button>
+      </form>
+      
+    </div>
   </div>
 </div>

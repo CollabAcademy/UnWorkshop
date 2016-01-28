@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
-	<head>
-		<title>UnWorkshop</title>
+  <head>
+    <title>UnWorkshop</title>
 
     <!-- Flat design -->
     <link rel="stylesheet" href="/css/uikit.almost-flat.min.css" />
@@ -18,8 +18,8 @@
     <!--Let browser know website is optimized for mobile--> 
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 
-	</head>
-	<body>
+  </head>
+  <body>
     <nav class="light-blue lighten-1" role="navigation">
       <div class="nav-wrapper">
         <ul id="nav-mobile">
@@ -29,17 +29,17 @@
             <li><a href="/milestones">Milestones</a></li>
           <% if (!user) { %>
             <li><a href="/login">Login</a></li>
-      		<% } else { %>
+          <% } else { %>
             <% if (is_admin) { %>
-      			  <li><a href="/admin">Admin</a></li>
+              <li><a href="/admin">Admin</a></li>
             <% } %>
-      			<li><a href="/account">Account</a></li>
-      			<li><a href="/logout">Log Out</a></li>
-      		<% } %>
+            <li><a href="/account">Account</a></li>
+            <li><a href="/logout">Log Out</a></li>
+          <% } %>
         </ul>
       </div>
     </nav>
-		<%- body %>
+    <%- body %>
 
 
     <!-- Import scripts -->
@@ -47,5 +47,5 @@
     <script src="/js/uikit.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.5/js/materialize.min.js"></script>
 
-	</body>
+  </body>
 </html>

@@ -10,7 +10,8 @@ if (!global.hasOwnProperty('db')) {
     host:     match[3],
     logging: false,
     dialectOptions: {
-      ssl: (process.env.HOST == 'http://localhost:3000') ? false : true
+      // SSL unless it's a local connection
+      ssl: ((process.env.HOST.indexOf("localhost") !=-1) || (process.env.HOST.indexOf("127.0.0.1") !=-1)) ? false : true
     }
   });
 

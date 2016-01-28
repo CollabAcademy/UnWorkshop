@@ -227,7 +227,7 @@ app.get('/account',
 app.get('/admin',
   ensureAuthenticated,
   function(req, res, next){
-    if(req.local.is_admin)
+    if(res.locals.is_admin)
       res.render('admin');
     else
       res.redirect('/');

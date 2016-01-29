@@ -246,14 +246,14 @@ app.get('/ideas',
   function(req, res, next) {
     switch (req.app.locals._stage) {
       case 1:
-        res.render('ideas_form');
+        res.render('ideas_form', {phase : 'idea'});
         break;
       case 2:
         db.Idea.findAll({
           attributes: ['id', 'title', 'blurb', 'success_metric']
         })
         .then(function(idea){
-          res.render('ideas_list', {stage: 'rate', idea : idea});
+          res.render('ideas_list', {stage: 'rate', idea : idea, phase : 'idea'});
         })
         break;
       case 3:
@@ -261,7 +261,7 @@ app.get('/ideas',
           attributes: ['id', 'title', 'blurb', 'success_metric',]
         })
         .then(function(idea){
-          res.render('ideas_list', {stage: 'select', idea : idea});
+          res.render('ideas_list', {stage: 'select', idea : idea, phase : 'idea'});
         })
         break;
       default:
@@ -309,14 +309,14 @@ app.get('/methods',
   function(req, res, next) {
     switch (req.app.locals._stage) {
       case 4:
-        res.render('methods_form');
+        res.render('methods_form', {phase : 'method'});
         break;
       case 5:
         db.Method.findAll({
           attributes: ['id', 'label', 'tool', 'description']
         })
         .then(function(idea){
-          res.render('methods_list', {stage: 'rate', method : method});
+          res.render('methods_list', {stage: 'rate', method : method, phase : 'method'});
         })
         break;
       case 6:
@@ -324,7 +324,7 @@ app.get('/methods',
           attributes: ['id', 'label', 'tool', 'description', 'rating']
         })
         .then(function(idea){
-          res.render('methods_list', {stage: 'select', method : method});
+          res.render('methods_list', {stage: 'select', method : method, phase : 'method'});
         })
         break;
       default:
@@ -372,14 +372,14 @@ app.get('/milestones',
   function(req, res, next) {
     switch (req.app.locals._stage) {
       case 7:
-        res.render('milestones_form');
+        res.render('milestones_form', {phase : 'milestone'});
         break;
       case 8:
         db.Milestone.findAll({
           attributes: ['id', 'date', 'milestone', 'description']
         })
         .then(function(milestone){
-          res.render('milestones_list', {stage: 'rate', milestone : milestone});
+          res.render('milestones_list', {stage: 'rate', milestone : milestone, phase : 'method'});
         })
         break;
       case 9:
@@ -387,7 +387,7 @@ app.get('/milestones',
           attributes: ['id', 'date', 'milestone', 'description', 'rating']
         })
         .then(function(milestone){
-          res.render('milestones_list', {stage: 'select', milestone : milestone});
+          res.render('milestones_list', {stage: 'select', milestone : milestone, phase : 'method'});
         })
         break;
       default:

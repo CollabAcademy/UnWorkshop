@@ -249,13 +249,23 @@ app.get('/ideas',
         res.render('ideas_form');
         break;
       case 2:
-        res.render('ideas_list', {rate: true, ideas: []});
+        db.Idea.findAll({
+          attributes: ['id', 'title', 'blurb', 'success_metric']
+        })
+        .then(function(idea){
+          res.render('ideas_list', {stage: 'rate', idea : idea});
+        })
         break;
       case 3:
-        res.render('ideas_list', {filter : true, ideas: []});
+        db.Idea.findAll({
+          attributes: ['id', 'title', 'blurb', 'success_metric',]
+        })
+        .then(function(idea){
+          res.render('ideas_list', {stage: 'select', idea : idea});
+        })
         break;
       default:
-        res.redirect('/');
+        res.redirect('/')
     }
   });
 
@@ -266,12 +276,14 @@ app.post('/ideas',
     db.Idea.create({
       title: req.body.title,
       blurb: req.body.blurb,
-      success_mertic: req.body.success_mertic
+      success_metric: req.body.success_metric
     })
-    .then(res.redirect('/ideas', {gather: true}));
+    .then(function(idea){
+      res.redirect('/ideas')
+    });
   });
 
-// POST /ideas/rating
+// POST /ideas/rate
 app.post('/ideas/rate',
   ensureAuthenticated,
   function(req, res, next) {
@@ -279,7 +291,7 @@ app.post('/ideas/rate',
       idea_id: req.body.idea_id,
       user_id: req.body.user_id,
       rating: req.body.rating
-    }).then(res.redirect('/ideas', {rate: true}))
+    }).then(res.redirect('/ideas'))
   });
 
 // POST /ideas/filter
@@ -300,13 +312,23 @@ app.get('/methods',
         res.render('methods_form');
         break;
       case 5:
-        res.render('methods_list', {rate: true, methods: []});
+        db.Method.findAll({
+          attributes: ['id', 'label', 'tool', 'description']
+        })
+        .then(function(idea){
+          res.render('methods_list', {stage: 'rate', method : method});
+        })
         break;
       case 6:
-        res.render('methods_list', {filter : true, methods: []});
+        db.Method.findAll({
+          attributes: ['id', 'label', 'tool', 'description', 'rating']
+        })
+        .then(function(idea){
+          res.render('methods_list', {stage: 'select', method : method});
+        })
         break;
       default:
-        res.redirect('/');
+        res.redirect('/')
     }
   });
 
@@ -319,7 +341,9 @@ app.post('/methods',
       tool: req.body.tool,
       description: req.body.description
     })
-    .then(res.redirect('/methods', {gather: true}));
+    .then(function(method){
+      res.redirect('/methods')
+    });
   });
 
 // POST /methods/rating
@@ -330,7 +354,7 @@ app.post('/methods/rate',
       method_id: req.body.method_id,
       user_id: req.body.user_id,
       rating: req.body.rating
-    }).then(res.redirect('/methods', {rate: true}))
+    }).then(res.redirect('/methods'))
   });
 
 // POST /methods/filter
@@ -351,13 +375,23 @@ app.get('/milestones',
         res.render('milestones_form');
         break;
       case 8:
-        res.render('milestones_list', {rate: true, milestones: []});
+        db.Milestone.findAll({
+          attributes: ['id', 'date', 'milestone', 'description']
+        })
+        .then(function(milestone){
+          res.render('milestones_list', {stage: 'rate', milestone : milestone});
+        })
         break;
       case 9:
-        res.render('milestones_list', {filter : true, milestones: []});
+        db.Milestone.findAll({
+          attributes: ['id', 'date', 'milestone', 'description', 'rating']
+        })
+        .then(function(milestone){
+          res.render('milestones_list', {stage: 'select', milestone : milestone});
+        })
         break;
       default:
-        res.redirect('/');
+        res.redirect('/')
     }
   });
 
@@ -370,8 +404,11 @@ app.post('/milestones',
       milestone: req.body.milestone,
       description: req.body.description
     })
-    .then(res.redirect('/milestones', {gather: true}));
+    .then(function(milestone){
+      res.redirect('/milestones')
+    });
   });
+
 
 // POST /milestones/rating
 app.post('/milestones/rate',
@@ -381,7 +418,7 @@ app.post('/milestones/rate',
       milestone_id: req.body.milestone_id,
       user_id: req.body.user_id,
       rating: req.body.rating
-    }).then(res.redirect('/milestones', {rate: true}))
+    }).then(res.redirect('/milestones'))
   });
 
 // POST /milestones/filter

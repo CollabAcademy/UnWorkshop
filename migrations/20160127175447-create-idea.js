@@ -17,6 +17,9 @@ module.exports = {
       success_metric: {
         type: Sequelize.TEXT
       },
+      rating: {
+        type: Sequelize.INTEGER
+      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE

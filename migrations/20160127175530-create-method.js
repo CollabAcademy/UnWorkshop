@@ -14,6 +14,9 @@ module.exports = {
       tool: {
         type: Sequelize.STRING
       },
+      rating: {
+        type: Sequelize.INTEGER
+      },
       description: {
         type: Sequelize.TEXT
       },

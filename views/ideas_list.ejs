@@ -6,35 +6,29 @@
   <div class="">
     <table>
       <th>
-        <td>#</td>
+        <!-- <td>#</td> -->
         <td>title</td>
         <td>blurb</td>
         <td>success metrics</td>
-        <td>Rating</td>
-        <tr>
-        </tr>
+        <% if(stage == 'rate') { %>
+          <td>Rating</td>
+        <% } %>
+        <% if(stage == 'filter') { %>
+          <td>Rating</td>
+          <td>Select</td>
+        <% } %>
       </th>
-      <tr>
-        <td>1</td>
-        <td>idea 1</td>
-        <td>blurb blurb blurb blurb blurb blurb blurb blurb blurb blurb blurb blurb</td>
-        <td>success metrics success metrics success metrics success metrics success metrics success metrics success metrics </td>
-        <td>3</td>
-      </tr>
-      <tr>
-        <td>2</td>
-        <td>idea 2</td>
-        <td>blurb blurb blurb blurb blurb blurb blurb blurb blurb blurb blurb blurb</td>
-        <td>success metrics success metrics success metrics success metrics success metrics success metrics success metrics </td>
-        <td>2</td>
-      </tr>
-      <tr>
-        <td>1</td>
-        <td>idea 2</td>
-        <td>blurb blurb blurb blurb blurb blurb blurb blurb blurb blurb blurb blurb</td>
-        <td>success metrics success metrics success metrics success metrics success metrics success metrics success metrics </td>
-        <td>5</td>
-      </tr>
+      <% for (var i=0; i<idea.length ; i++) {%>
+        <tr>
+          <!-- <td><%= idea[i].id %></td> -->
+          <td><%= idea[i].title %></td>
+          <td><%= idea[i].blurb %></td>
+          <td><%= idea[i].success_metric %></td>
+          <% if(stage == 'rate') { %>
+            <td>ajax form submit</td>
+          <% } %>
+        </tr>
+      <% } %>
     </table>
   </div>
 </div>

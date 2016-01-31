@@ -1,2 +1,0 @@
-exports.GITHUB_CLIENT_ID = process.env.GITHUB_CLIENT_ID;
-exports.GITHUB_CLIENT_SECRET = process.env.GITHUB_CLIENT_SECRET;

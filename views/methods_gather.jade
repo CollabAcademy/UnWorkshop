@@ -1,0 +1,16 @@
+extends ./layout.jade
+
+block content
+  div
+    form(name='gather-method', method='post')
+      div(class='form-group')
+        label Label
+        input(type='text', name='title', placeholder='title')
+      div(class='form-group')
+        label Tool
+        input(type='text', name='tool', placeholder='tool')
+      div(class='form-group')
+        label Description
+        textarea(name='description', placeholder='description...')
+      
+      button(type="submit" class="btn btn-default") Submit

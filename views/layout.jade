@@ -1,0 +1,69 @@
+doctype html
+html(lang="en")
+  head
+    block title
+      title UnWorkshop
+    link(href='/css/bootstrap.css', rel='stylesheet')
+    script(type='text/javascript', src='/js/bootstrap.min.js')
+  body
+    nav(class="navbar navbar-default")
+      div(class="container-fluid")
+      div(class="collapse navbar-collapse")
+        ul(class="nav navbar-nav")
+          li(class="")
+            a(href="/") Home
+          if isAdmin
+            li
+              a(href="/admin") Admin
+          
+          li(class="dropdown")
+            a(href="/ideas" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false") Pilot Proposal
+              span(class="caret")
+              ul(class="dropdown-menu")
+                li
+                  a(href= '/ideas/gather') Gather
+                li
+                  a(href= '/ideas/rate') Rate
+                li
+                  a(href= '/ideas/filter') Filter
+                li(role="separator" class="divider")
+                li
+                  a(href='/ideas/result') Result
+          li(class="dropdown")
+            a(href="/methods" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false") Technical implementation
+              span(class="caret")
+              ul(class="dropdown-menu")
+                li
+                  a(href= '/methods/gather') Gather
+                li
+                  a(href= '/methods/rate') Rate
+                li
+                  a(href= '/methods/filter') Filter
+                li(role="separator" class="divider")
+                li
+                  a(href='/methods/result') Result
+          li(class="dropdown")
+            a(href="/milestones" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false") Outcome
+              span(class="caret")
+              ul(class="dropdown-menu")
+                li
+                  a(href= '/milestones/gather') Gather
+                li
+                  a(href= '/milestones/rate') Rate
+                li
+                  a(href= '/milestones/filter') Filter
+                li(role="separator" class="divider")
+                li
+                  a(href='/milestones/result') Result
+            
+        ul(class="nav navbar-nav navbar-right")
+          if user
+            li
+              a(href="/logout") Logout
+            li
+              a(href='/user') Account
+          else
+            li
+              a(href='/login') Login
+    
+    block content

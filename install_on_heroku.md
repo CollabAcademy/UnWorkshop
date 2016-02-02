@@ -51,16 +51,13 @@ heroku config:set HOST=https://<heroku_app_name>.herokuapp.com
 heroku config:set ADMIN_ROUND_ONE=<email of the admin authorized for round 1>
 heroku config:set ADMIN_ROUND_TWO=<email of the admin authorized for round 2>
 ```
-- Setup [postgresql on Heroku](https://devcenter.heroku.com/articles/heroku-postgresql)
+- Setup [mongodb (mongolab) on Heroku](https://elements.heroku.com/addons/mongolab)
 ```
-heroku addons:create heroku-postgresql:hobby-dev
+heroku addons:create mongolab:sandbox
 ```
 - push code to master
 ```
 git push heroku master
-heroku run bash
-sequelize db:migrate
-exit
 heroku ps:scale web=1
 heroku open
 ```

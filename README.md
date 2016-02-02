@@ -57,7 +57,7 @@ On local: Follow the below steps
 Prerequisites:
 - Setup node and npm - https://nodejs.org/en/
 - Get Github dev credentials/authorize app on github - https://github.com/settings/developers
-- install Postgres database on your system - http://www.postgresql.org/
+- install Mongodb on your system - https://www.mongodb.org/downloads
 #### Pre-requisites:
 - Setup node and npm in your computer: https://nodejs.org/en/
 - Get Github dev credentials(Github OAuth2): https://github.com/settings/developers
@@ -79,18 +79,13 @@ Set ENVIRONMENT variables
  export GITHUB_CLIENT_SECRET = <GITHUB_CLIENT_SECRET>
  export GOOGLE_CLIENT_ID = <GOOGLE_CLIENT_ID>
  export GOOGLE_CLIENT_SECRET = <GOOGLE_CLIENT_SECRET>
- export DATABASE_URL = postgres://user:password@host:port/database
+ export MONGOLAB_URI = mongodb://localhost/unworkshop
 ```
 - install dependancies
 ```
  npm install
- ./node_modules/.bin/sequelize db:migrate
+```
+- start the app
+```
  node app.js
-```
-
-Then, start heroku. The default address is localhost:5000, but there are more options in [Heroku's FAQ](https://devcenter.heroku.com/articles/heroku-local#run-your-app-locally-using-the-heroku-local-command-line-tool-start-your-app-locally).
-
-- Start a app server locally
-```
- heroku local
 ```

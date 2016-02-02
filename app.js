@@ -14,7 +14,7 @@ var admins = require('./admins.js')
 
 // Database and models
 var mongoose = require('mongoose');
-var db = mongoose.connect('localhost', 'unworkshop');
+var db = mongoose.connect(process.env.MONGOLAB_URI);
 var User = require("./models/user").User;
 var Form = require("./models/form").Form;
 

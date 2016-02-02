@@ -9,10 +9,6 @@ var MilestoneSchema = new mongoose.Schema({
   selected: {type: Boolean, default: false}
 });
 
-MilestoneSchema.statics.get = function(offset, count, cb) {
-  return this.find({}, cb).skip(offset).limit(count)
-}
-
 MilestoneSchema.methods.rate = function (rating, cb) {
   return this.model('Milestone').update({ _id: this._id }, { $inc: { rating: rating}}, cb);
 }

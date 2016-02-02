@@ -9,10 +9,6 @@ var MethodSchema = new mongoose.Schema({
   selected: {type: Boolean, default: false}
 });
 
-MethodSchema.statics.get = function(offset, count, cb) {
-  return this.find({}, cb).skip(offset).limit(count)
-}
-
 MethodSchema.methods.rate = function (rating, cb) {
   return this.model('Method').update({ _id: this._id }, { $inc: { rating: rating}}, cb);
 }

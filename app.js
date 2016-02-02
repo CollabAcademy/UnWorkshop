@@ -8,7 +8,11 @@ app.locals = {
   stages : ['Stage 1', 'Stage 2', 'Stage 3'],
   steps : ['Gather', 'Rate', 'Filter'],
   _stage : 0,
-  _step: 0
+  _step: 0,
+  rate_at_a_time: 5,
+  stage_one_seeker: 0,
+  stage_two_seeker: 0,
+  stage_three_seeker: 0
 }
 
 // ===== config files, values need to be updated by the admin
@@ -81,11 +85,35 @@ app.use('/admin', ensureAuthenticatedAsAdmin, admin)
 
 app.use('/user', users)
 
-app.use('/ideas', ideas)
+app.use('/ideas',
+  function(req, res, next){
+    if(req.app.locals._stage == 3)
+      ensureAuthenticatedAsAdmin
+    else
+      return next()
+  },
+  ideas
+)
 
-app.use('/methods', methods)
+app.use('/methods',
+  function(req, res, next){
+  if(req.app.locals._stage == 6)
+    ensureAuthenticatedAsAdmin
+  else
+    return next()
+  },
+  methods
+)
 
-app.use('/milestones', milestones)
+app.use('/milestones',
+  function(req, res, next){
+  if(req.app.locals._stage == 9)
+    ensureAuthenticatedAsAdmin
+  else
+    return next()
+  },
+  milestones
+)
 
 // Run the app
 app.listen(app.get('port'), function() {

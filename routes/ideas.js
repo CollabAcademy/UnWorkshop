@@ -53,13 +53,19 @@ router.get('/rate',
       res.redirect('/')
   },
   function(req, res) {
-  Idea.find({}, function (err, ideas) {
-    if(ideas)
-      res.render('ideas_rate', {ideas: ideas})
-    else
-      res.json(error)
-  })
-});
+    Idea.count({}, function(err, count){
+      if(req.app.locals.stage_one_seeker>count)
+        req.app.locals.stage_one_seeker = 0
+
+      Idea.find({},{},{skip: req.app.locals.stage_one_seeker, limit: req.app.locals.rate_at_a_time}, function (err, ideas) {
+        req.app.locals.stage_one_seeker += req.app.locals.rate_at_a_time
+        if(ideas)
+          res.render('ideas_rate', {ideas: ideas})
+        else
+          res.json(err)
+      })
+    })
+  });
 
 router.post('/rate',
   function(req, res, next){

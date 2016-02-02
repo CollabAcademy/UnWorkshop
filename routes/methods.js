@@ -53,13 +53,19 @@ router.get('/rate',
       res.redirect('/')
   },
   function(req, res) {
-    Method.find({}, function (err, methods) {
-      if(methods)
-        res.render('methods_rate', {methods: methods})
-      else
-        res.json(error)
+    Method.count({}, function(err, count){
+      if(req.app.locals.stage_two_seeker>count)
+        req.app.locals.stage_two_seeker = 0
+
+      Method.find({},{},{skip: req.app.locals.stage_two_seeker, limit: req.app.locals.rate_at_a_time}, function (err, methods) {
+        req.app.locals.stage_two_seeker += req.app.locals.rate_at_a_time
+        if(methods)
+          res.render('methods_rate', {methods: methods})
+        else
+          res.json(err)
+      })
     })
-});
+  });
 
 router.post('/rate',
   function(req, res, next){

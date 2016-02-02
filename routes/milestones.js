@@ -54,13 +54,19 @@ router.get('/rate',
       res.redirect('/')
   },
   function(req, res) {
-    Milestone.find({}, function (err, milestones) {
-      if(milestones)
-        res.render('milestones_rate', {milestones: milestones})
-      else
-        res.json(error)
+    Milestone.count({}, function(err, count){
+      if(req.app.locals.stage_three_seeker>count)
+        req.app.locals.stage_three_seeker = 0
+
+      Milestone.find({},{},{skip: req.app.locals.stage_three_seeker, limit: req.app.locals.rate_at_a_time}, function (err, milestones) {
+        req.app.locals.stage_three_seeker += req.app.locals.rate_at_a_time
+        if(milestones)
+          res.render('milestones_rate', {milestones: milestones})
+        else
+          res.json(err)
+      })
     })
-});
+  });
 
 router.post('/rate',
   function(req, res, next){

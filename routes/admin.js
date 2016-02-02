@@ -25,6 +25,11 @@ router.post('/setup/stages', function(req, res){
   res.redirect('/admin/setup')
 })
 
+router.post('/setup/rating', function(req, res){
+  req.app.locals.rate_at_a_time = req.body.count
+  res.redirect('/admin/setup')
+})
+
 router.post('/setup/forms',function(req, res){
   var form = {stage: req.body.stage, schema: JSON.parse(req.body.schema)}
   Form.update(

@@ -33,7 +33,6 @@ router.post('/gather',
   function(req, res) {
     milestone = {
       title: req.body.title,
-      date: req.body.date,
       description: req.body.description,
       user_email: res.locals.user_email
     }

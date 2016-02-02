@@ -7,14 +7,12 @@ block content
         tr
           th #
           th title
-          th date
           td description
           td rating
           each val in milestones
             tr
               td= val._id
               td= val.title
-              td= val.date
               td= val.description
               td
                 form(name='rate-milestone', method='post')

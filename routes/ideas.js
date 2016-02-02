@@ -1,6 +1,7 @@
 var express = require('express');
 var router = express.Router();
 var Idea = require('../models/idea').Idea;
+var Form = require('../models/form').Form;
 var stringify = require('json-stringify-safe');
 
 router.get('/', function(req, res) {
@@ -18,24 +19,31 @@ router.get('/gather',
       res.redirect('/')
   },
   function(req, res) {
-  res.render('ideas_gather')
-});
+    res.render('ideas_gather')
+  });
 
-router.post('/gather', function(req, res) {
-  idea = {
-    title: req.body.title,
-    blurb: req.body.blurb,
-    success_metrics: req.body.success_metrics,
-    user_email: res.locals.user_email
-  }
-
-  Idea.create(idea, function(err, idea){
-    if(idea)
-      res.json(idea);
+router.post('/gather',
+  function(req, res, next){
+    if(app.locals._stage == 1)
+      return next()
     else
-      res.json(err)
-  })
-});
+      res.redirect('/')
+  },
+  function(req, res) {
+    idea = {
+      title: req.body.title,
+      blurb: req.body.blurb,
+      success_metrics: req.body.success_metrics,
+      user_email: res.locals.user_email
+    }
+
+    Idea.create(idea, function(err, idea){
+      if(idea)
+        res.json(idea);
+      else
+        res.json(err)
+    })
+  });
 
 router.get('/rate',
   function(req, res, next){
@@ -45,23 +53,36 @@ router.get('/rate',
       res.redirect('/')
   },
   function(req, res) {
-  Idea.find({}, function (err, ideas) {
-    if(ideas)
-      res.render('ideas_rate', {ideas: ideas})
-    else
-      res.json(error)
-  })
-});
+    Idea.count({}, function(err, count){
+      if(req.app.locals.stage_one_seeker>count)
+        req.app.locals.stage_one_seeker = 0
 
-router.post('/rate', function(req, res) {
-  Idea.find({_id : req.body._id}, function(err, idea){
-    if(idea){
-      idea[0].rate(req.body.rating, function(err, x){
-        res.json(x)
+      Idea.find({},{},{skip: req.app.locals.stage_one_seeker, limit: req.app.locals.rate_at_a_time}, function (err, ideas) {
+        req.app.locals.stage_one_seeker += req.app.locals.rate_at_a_time
+        if(ideas)
+          res.render('ideas_rate', {ideas: ideas})
+        else
+          res.json(err)
       })
-    }
-  })
-});
+    })
+  });
+
+router.post('/rate',
+  function(req, res, next){
+    if(app.locals._stage == 2)
+      return next()
+    else
+      res.redirect('/')
+  },
+  function(req, res) {
+    Idea.find({_id : req.body._id}, function(err, idea){
+      if(idea){
+        idea[0].rate(req.body.rating, function(err, x){
+          res.json(x)
+        })
+      }
+    })
+  });
 
 router.get('/filter',
   function(req, res, next){
@@ -76,15 +97,22 @@ router.get('/filter',
   });
 });
 
-router.post('/filter', function(req, res) {
-  Idea.find({_id : req.body._id}, function(err, idea){
-    if(idea){
-      idea[0].select(function(err, x){
-        res.json(x)
-      })
-    }
-  })
-});
+router.post('/filter',
+  function(req, res, next){
+    if(app.locals._stage == 3)
+      return next()
+    else
+      res.redirect('/')
+  },
+  function(req, res) {
+    Idea.find({_id : req.body._id}, function(err, idea){
+      if(idea){
+        idea[0].select(function(err, x){
+          res.json(x)
+        })
+      }
+    })
+  });
 
 router.get('/result',
   function(req, res, next){

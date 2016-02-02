@@ -1,0 +1,76 @@
+extends ./layout.jade
+
+block content
+  div(id='reset', class='container-fluid')
+    h3 Reset
+    button(class='btn btn-danger')
+      a(href='/admin/setup/reset') Reset all forms/stages
+
+  div(id='stages', class='container-fluid')
+    div
+      h3 Stages
+    div
+      h5 Current Stages:
+      span [#{stages[0]}, #{stages[1]}, #{stages[2]}]
+
+    div
+      div
+        h5 Name your stages
+      div
+        form(name='stage-names', method='post', action='/admin/setup/stages')
+          div(class='form-group')
+            label Stage 1
+            input(type='text', name='stage_one', placeholder='')
+          div(class='form-group')
+            label Stage 2
+            input(type='text', name='stage_two', placeholder='')
+          div(class='form-group')
+            label Stage 3
+            input(type='text', name='stage_three', placeholder='')
+          
+          button(type="submit" class="btn btn-default") Submit
+
+  div(id='stages', class='container-fluid')
+    div
+      div
+        h5 Rating setup
+      div
+        form(name='user-rate-count', method='post', action='/admin/setup/rating')
+          div(class='form-group')
+            label Records per User for Rating
+            input(type='number', name='count', placeholder='#{rate_at_a_time}')
+          button(type="submit" class="btn btn-default") Submit
+
+  div(id='forms', class='container-fluid')
+    div
+      h3 Form Schemas
+    div(class="row")
+      div(class="col col-xs-4")
+        form(method='post', action='/admin/setup/forms')
+          input(type='hidden', name='stage', value='#{stages[0]}')
+          div(class='form-group')
+            label #{stages[0]} Schema
+          div(class='form-group')
+            textarea(name='schema', placeholder='')
+          div(class='form-group')
+            button(type="submit" class="btn btn-default") Submit
+      
+      div(class="col col-xs-4")
+        form(method='post', action='/admin/form/stages')
+          input(type='hidden', name='stage', value='#{stages[1]}')
+          div(class='form-group')
+            label #{stages[1]} Schema
+          div(class='form-group')
+            textarea(name='schema', placeholder='')
+          div(class='form-group')
+            button(type="submit" class="btn btn-default") Submit
+      
+      div(class="col col-xs-4")
+        form(method='post', action='/admin/form/stages')
+          input(type='hidden', name='stage', value='#{stages[2]}')
+          div(class='form-group')
+            label #{stages[2]} Schema
+          div(class='form-group')
+            textarea(name='schema', placeholder='')
+          div(class='form-group')
+            button(type="submit" class="btn btn-default") Submit

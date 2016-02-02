@@ -5,118 +5,6 @@ var User = require('../models/user').User
 var Form = require('../models/form').Form
 
 router.get('/', function(req, res){
-  Form.remove({});
-  var formForm = new Form(
-    {
-      stage : -1,
-      form_name: 'form',
-      title: 'Form Schema',
-      description: 'Describe your form schema here',
-      form_schema: {
-        stage: {
-          type: 'number',
-          title: 'Stage',
-          required: true
-        },
-        form_name: {
-          type: 'string',
-          title: 'Name your form',
-          required: true
-        },
-        title: {
-          type: 'string',
-          title: 'Give it a title',
-           required: true
-        },
-        description: {
-          type: 'string',
-          title: 'Tell something about it, so users know what it is for',
-          required: true
-        },
-        form_schema: {
-          type: 'object',
-          title: 'define the json schema of the form',
-          required: true
-        }
-      }
-    }
-  )
-  var ideaForm = new Form(
-    {
-      stage : 1,
-      form_name: 'ideas',
-      title: 'What\'s your idea?',
-      description: 'Please fill in the following ascpects of your idea',
-      form_schema: {
-        title: {
-          type: 'string',
-          title: 'Title',
-          required: true
-        },
-        blurb: {
-          type: 'string',
-          title: 'A short summary',
-          required: true
-        },
-        success_metrics: {
-          type: 'array',
-          title: 'Success Metrics',
-          required: true
-        }
-      }
-    }
-  )
-  var methodForm = new Form(
-    {
-      stage : 2,
-      form_name: 'methods',
-      title: 'How do you suggest we do it?',
-      description: 'describe the tools and methodologies the you recommend using',
-      form_schema: {
-        label: {
-          type: 'string',
-          title: 'Label',
-          required: true,
-          enum: ['language', 'framework', 'tool', 'methodology']
-        },
-        title: {
-          type: 'string',
-          title: 'Title',
-          required: true
-        },
-        description: {
-          type: 'string',
-          title: 'Please describe',
-          required: true
-        }
-      }
-    }
-  )
-  var milestone = new Form(
-    {
-      stage : 3,
-      form_name: 'Milestones',
-      title: 'Suggest milestone',
-      description: 'Please suggest feasable milestones',
-      form_schema: {
-        title: {
-          type: 'string',
-          title: 'Title',
-          required: true
-        },
-        date: {
-          type: 'date',
-          title: 'Expected Date',
-          required: true
-        },
-        description: {
-          type: 'string',
-          title: 'More details about the milestone',
-          required: true
-        }
-      }
-    }
-  )
   res.render('admin_dash')
 });
 
@@ -127,14 +15,41 @@ router.get('/users', function(req, res) {
   })
 });
 
-router.get('/build', function(req, res) {
-  Form.find(
-    { stage: { $gt: 0 } },
-    function(err, success){
-      if(err) {res.json(err)}
-      else { res.render('form_build', {forms: success})}
-    }
-  )
+router.get('/setup', function(req, res){
+  res.render('admin_setup')
+});
+
+router.post('/setup/stages', function(req, res){
+  var stages = [req.body.stage_one, req.body.stage_two, req.body.stage_three]
+  req.app.locals.stages = stages
+  res.redirect('/admin/setup')
+})
+
+router.post('/setup/rating', function(req, res){
+  req.app.locals.rate_at_a_time = req.body.count
+  res.redirect('/admin/setup')
+})
+
+router.post('/setup/forms',function(req, res){
+  var form = {stage: req.body.stage, schema: JSON.parse(req.body.schema)}
+  Form.update(
+    {stage: form.stage},
+    form,
+    { upsert: true },
+    function(err, num){
+      if(err){ res.json(err); }
+      else{ res.redirect('/admin/setup') }
+    })
+})
+
+router.get('/setup/reset', function(req, res){
+  Form.remove({}, function(err){
+    req.app.locals.stages = ['Stage 1', 'Stage 2', 'Stage 3']
+    req.app.locals.steps = ['Submit', 'Rate', 'Filter']
+    req.app.locals._stage = 0
+    req.app.locals._step = 0
+    res.redirect('/admin/setup')
+  })
 })
 
 router.get('/stage', function(req, res) {

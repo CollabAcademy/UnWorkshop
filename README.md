@@ -75,6 +75,7 @@ Set ENVIRONMENT variables
  export HOST = http://localhost:3000
  export ADMIN_ROUND_ONE = <email_admin_1>
  export ADMIN_ROUND_TWO = <email_admin_2>
+ export ADMIN_ROUND_THREE = <email_admin_3>
  export GITHUB_CLIENT_ID = <GITHUB_CLIENT_ID>
  export GITHUB_CLIENT_SECRET = <GITHUB_CLIENT_SECRET>
  export GOOGLE_CLIENT_ID = <GOOGLE_CLIENT_ID>

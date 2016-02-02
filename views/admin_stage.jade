@@ -26,9 +26,9 @@ block content
           th Stage
           th Step
           //- td 'description'
-          each stage, indexa in stages.stages
-            each step, indexb in stage.steps
+          each stage, indexa in stages
+            each step, indexb in steps
               tr
                 td= (indexa *3) + indexb + 1
-                td= stage.title
-                td= step.title
+                td= stage
+                td= step

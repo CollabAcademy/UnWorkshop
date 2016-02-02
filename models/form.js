@@ -1,9 +1,7 @@
 var mongoose = require("mongoose");
 
 var FormSchema = new mongoose.Schema({
-  stage: { type: Number },
-  question: String,
-  description: String,
+  stage: { type: String },
   form_schema: Object
 });
 

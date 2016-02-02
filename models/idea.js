@@ -9,10 +9,6 @@ var IdeaSchema = new mongoose.Schema({
   selected: {type: Boolean, default: false}
 });
 
-IdeaSchema.statics.get = function(offset, count, cb) {
-  return this.find({}, cb).skip(offset).limit(count)
-}
-
 IdeaSchema.methods.rate = function (rating, cb) {
   return this.model('Idea').update({ _id: this._id }, { $inc: { rating: rating}}, cb);
 }

@@ -1,6 +1,7 @@
 var express = require('express');
 var router = express.Router();
 var Method = require('../models/method').Method;
+var Idea = require('../models/idea').Idea;
 var stringify = require('json-stringify-safe');
 
 router.get('/', function(req, res) {
@@ -21,21 +22,28 @@ router.get('/gather',
     res.render('methods_gather')
 });
 
-router.post('/gather', function(req, res) {
-  method = {
-    label: req.body.label,
-    tool: req.body.tool,
-    description: req.body.description,
-    user_email: res.locals.user_email
-  }
-
-  Method.create(method, function(err, method){
-    if(method)
-      res.json(method);
+router.post('/gather',
+  function(req, res, next){
+    if(app.locals._stage == 4)
+      return next()
     else
-      res.json(err)
-  })
-});
+      res.redirect('/')
+  },
+  function(req, res) {
+    method = {
+      label: req.body.label,
+      tool: req.body.tool,
+      description: req.body.description,
+      user_email: res.locals.user_email
+    }
+
+    Method.create(method, function(err, method){
+      if(method)
+        res.json(method);
+      else
+        res.json(err)
+    })
+  });
 
 router.get('/rate',
   function(req, res, next){
@@ -45,23 +53,36 @@ router.get('/rate',
       res.redirect('/')
   },
   function(req, res) {
-    Method.find({}, function (err, methods) {
-      if(methods)
-        res.render('methods_rate', {methods: methods})
-      else
-        res.json(error)
-    })
-});
+    Method.count({}, function(err, count){
+      if(req.app.locals.stage_two_seeker>count)
+        req.app.locals.stage_two_seeker = 0
 
-router.post('/rate', function(req, res) {
-  Method.find({_id : req.body._id}, function(err, method){
-    if(method){
-      method[0].rate(req.body.rating, function(err, x){
-        res.json(x)
+      Method.find({},{},{skip: req.app.locals.stage_two_seeker, limit: req.app.locals.rate_at_a_time}, function (err, methods) {
+        req.app.locals.stage_two_seeker += req.app.locals.rate_at_a_time
+        if(methods)
+          res.render('methods_rate', {methods: methods})
+        else
+          res.json(err)
       })
-    }
-  })
-});
+    })
+  });
+
+router.post('/rate',
+  function(req, res, next){
+    if(app.locals._stage == 5)
+      return next()
+    else
+      res.redirect('/')
+  },
+  function(req, res) {
+    Method.find({_id : req.body._id}, function(err, method){
+      if(method){
+        method[0].rate(req.body.rating, function(err, x){
+          res.json(x)
+        })
+      }
+    })
+  });
 
 router.get('/filter',
   function(req, res, next){
@@ -76,15 +97,22 @@ router.get('/filter',
     });
 });
 
-router.post('/filter', function(req, res) {
-  Method.find({_id : req.body._id}, function(err, method){
-    if(method){
-      method[0].select(function(err, x){
-        res.json(x)
-      })
-    }
-  })
-});
+router.post('/filter',
+  function(req, res, next){
+    if(app.locals._stage == 6)
+      return next()
+    else
+      res.redirect('/')
+  },
+  function(req, res) {
+    Method.find({_id : req.body._id}, function(err, method){
+      if(method){
+        method[0].select(function(err, x){
+          res.json(x)
+        })
+      }
+    })
+  });
 
 router.get('/result',
   function(req, res, next){
@@ -95,7 +123,9 @@ router.get('/result',
   },
   function(req, res) {
   Method.find({selected: true}, function(err, methods){
-    res.json(methods)
+    Idea.find({selected: true}, function(err, ideas){
+      res.json({ideas: ideas, methods: methods})
+    })
   });
 });
 

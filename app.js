@@ -5,8 +5,10 @@ module.exports = app = express();
 var bodyParser = require('body-parser');
 var passport = require('./passport');
 app.locals = {
-  stages : require('./stages'),
-  _stage : 0
+  stages : ['Stage 1', 'Stage 2', 'Stage 3'],
+  steps : ['Gather', 'Rate', 'Filter'],
+  _stage : 0,
+  _step: 0
 }
 
 // ===== config files, values need to be updated by the admin
@@ -79,26 +81,11 @@ app.use('/admin', ensureAuthenticatedAsAdmin, admin)
 
 app.use('/user', users)
 
-app.use('/ideas', function(req, res, next){
-  if(app.locals._stage >= 1 && app.locals._stage <= 4)
-    return next()
-  else
-    res.redirect('/')
-}, ideas)
+app.use('/ideas', ideas)
 
-app.use('/methods', function(req, res, next){
-  if(app.locals._stage >= 4 && app.locals._stage <= 7)
-    return next()
-  else
-    res.redirect('/')
-}, methods)
+app.use('/methods', methods)
 
-app.use('/milestones', function(req, res, next){
-  if(app.locals._stage >= 7 && app.locals._stage <= 10)
-    return next()
-  else
-    res.redirect('/')
-}, milestones)
+app.use('/milestones', milestones)
 
 // Run the app
 app.listen(app.get('port'), function() {

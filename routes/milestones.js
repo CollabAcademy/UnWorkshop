@@ -23,21 +23,28 @@ router.get('/gather',
     res.render('milestones_gather')
 });
 
-router.post('/gather', function(req, res) {
-  milestone = {
-    title: req.body.title,
-    date: req.body.date,
-    description: req.body.description,
-    user_email: res.locals.user_email
-  }
-
-  Milestone.create(milestone, function(err, milestone){
-    if(milestone)
-      res.json(milestone);
+router.post('/gather',
+  function(req, res, next){
+    if(app.locals._stage == 7)
+      return next()
     else
-      res.json(err)
-  })
-});
+      res.redirect('/')
+  },
+  function(req, res) {
+    milestone = {
+      title: req.body.title,
+      date: req.body.date,
+      description: req.body.description,
+      user_email: res.locals.user_email
+    }
+
+    Milestone.create(milestone, function(err, milestone){
+      if(milestone)
+        res.json(milestone);
+      else
+        res.json(err)
+    })
+  });
 
 router.get('/rate',
   function(req, res, next){
@@ -55,21 +62,35 @@ router.get('/rate',
     })
 });
 
-router.post('/rate', function(req, res) {
-  Milestone.find({_id : req.body._id}, function(err, milestone){
-    if(milestone){
-      milestone[0].rate(req.body.rating, function(err, x){
-        res.json(x)
-      })
-    }
-  })
-});
-
-router.get('/filter', function(req, res) {
-  Milestone.find().sort({rating: -1}).exec(function(err, milestones){
-    res.render('milestones_filter', {milestones: milestones})
+router.post('/rate',
+  function(req, res, next){
+    if(app.locals._stage == 8)
+      return next()
+    else
+      res.redirect('/')
+  },
+  function(req, res) {
+    Milestone.find({_id : req.body._id}, function(err, milestone){
+      if(milestone){
+        milestone[0].rate(req.body.rating, function(err, x){
+          res.json(x)
+        })
+      }
+    })
   });
-});
+
+router.get('/filter',
+  function(req, res, next){
+    if(app.locals._stage == 9)
+      return next()
+    else
+      res.redirect('/')
+  },
+  function(req, res) {
+    Milestone.find().sort({rating: -1}).exec(function(err, milestones){
+      res.render('milestones_filter', {milestones: milestones})
+    });
+  });
 
 router.post('/filter',
   function(req, res, next){
@@ -96,10 +117,14 @@ router.get('/result',
       res.redirect('/')
   },
   function(req, res) {
-  Milestone.find({selected: true}, function(err, milestones){
-    res.json(milestones)
+    Milestone.find({selected: true}, function(err, milestones){
+      Method.find({selected: true}, function (err, methods){
+        Idea.find({selected: true}, function(err, ideas){
+            res.json({milestones: milestones, methods: methods, ideas: ideas})
+        })
+      })
+    })
   });
-});
 
 
 module.exports = router;

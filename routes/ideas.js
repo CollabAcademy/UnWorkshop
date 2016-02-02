@@ -1,6 +1,7 @@
 var express = require('express');
 var router = express.Router();
 var Idea = require('../models/idea').Idea;
+var Form = require('../models/form').Form;
 var stringify = require('json-stringify-safe');
 
 router.get('/', function(req, res) {
@@ -18,24 +19,31 @@ router.get('/gather',
       res.redirect('/')
   },
   function(req, res) {
-  res.render('ideas_gather')
-});
+    res.render('ideas_gather')
+  });
 
-router.post('/gather', function(req, res) {
-  idea = {
-    title: req.body.title,
-    blurb: req.body.blurb,
-    success_metrics: req.body.success_metrics,
-    user_email: res.locals.user_email
-  }
-
-  Idea.create(idea, function(err, idea){
-    if(idea)
-      res.json(idea);
+router.post('/gather',
+  function(req, res, next){
+    if(app.locals._stage == 1)
+      return next()
     else
-      res.json(err)
-  })
-});
+      res.redirect('/')
+  },
+  function(req, res) {
+    idea = {
+      title: req.body.title,
+      blurb: req.body.blurb,
+      success_metrics: req.body.success_metrics,
+      user_email: res.locals.user_email
+    }
+
+    Idea.create(idea, function(err, idea){
+      if(idea)
+        res.json(idea);
+      else
+        res.json(err)
+    })
+  });
 
 router.get('/rate',
   function(req, res, next){
@@ -53,15 +61,22 @@ router.get('/rate',
   })
 });
 
-router.post('/rate', function(req, res) {
-  Idea.find({_id : req.body._id}, function(err, idea){
-    if(idea){
-      idea[0].rate(req.body.rating, function(err, x){
-        res.json(x)
-      })
-    }
-  })
-});
+router.post('/rate',
+  function(req, res, next){
+    if(app.locals._stage == 2)
+      return next()
+    else
+      res.redirect('/')
+  },
+  function(req, res) {
+    Idea.find({_id : req.body._id}, function(err, idea){
+      if(idea){
+        idea[0].rate(req.body.rating, function(err, x){
+          res.json(x)
+        })
+      }
+    })
+  });
 
 router.get('/filter',
   function(req, res, next){
@@ -76,15 +91,22 @@ router.get('/filter',
   });
 });
 
-router.post('/filter', function(req, res) {
-  Idea.find({_id : req.body._id}, function(err, idea){
-    if(idea){
-      idea[0].select(function(err, x){
-        res.json(x)
-      })
-    }
-  })
-});
+router.post('/filter',
+  function(req, res, next){
+    if(app.locals._stage == 3)
+      return next()
+    else
+      res.redirect('/')
+  },
+  function(req, res) {
+    Idea.find({_id : req.body._id}, function(err, idea){
+      if(idea){
+        idea[0].select(function(err, x){
+          res.json(x)
+        })
+      }
+    })
+  });
 
 router.get('/result',
   function(req, res, next){

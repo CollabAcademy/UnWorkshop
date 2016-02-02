@@ -1,5 +1,4 @@
 
-Check out the [WIKI](https://github.com/OpenConsent/ConsentReceipt/wiki) for more information on this project!
+Check out the project at: https://github.com/CollabAcademy/UnWorkshop/
 
-
-Check out: http://openconsent.github.io/consentreceipt
+Project website at: http://UnWorkshop.info 

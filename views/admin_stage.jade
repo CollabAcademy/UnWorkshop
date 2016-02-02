@@ -1,0 +1,34 @@
+extends ./layout.jade
+
+block content
+  div(class='container row')
+    div(class='container-fluid')
+      label Current Stage :
+        span= _stage
+  
+  div(class='container row')
+
+  div(class='container row')
+    div(class='container-fluid')
+      form(name='stage-select', method='post', class='form-inline')
+        div(class='form-group')
+          label Name
+          input(type='number', name='stage' class='form-control', placeholder=_stage)
+        button(type="submit" class="btn btn-default") Set
+  
+  div(class='container row')
+          
+  div(class='container row')
+    div(class='container-fluid')
+      table(class='table table-striped')
+        tr
+          th #
+          th Stage
+          th Step
+          //- td 'description'
+          each stage, indexa in stages.stages
+            each step, indexb in stage.steps
+              tr
+                td= (indexa *3) + indexb + 1
+                td= stage.title
+                td= step.title

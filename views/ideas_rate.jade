@@ -1,0 +1,24 @@
+extends ./layout.jade
+
+block content
+  div(class='container row')
+    div(class='container-fluid')
+      table(class='table table-striped')
+        tr
+          th #
+          th title
+          th blurb
+          td success_metrics
+          td rating
+          each val in ideas
+            tr
+              td= val._id
+              td= val.title
+              td= val.blurb
+              td= val.success_metrics
+              td
+                form(name='rate-idea', method='post')
+                  label Rating
+                  input(type='hidden', name='_id', value='#{val._id}')
+                  input(type='number', name='rating', placeholder='#{val.rating}')
+                  button(type="submit" class="btn btn-default") Submit

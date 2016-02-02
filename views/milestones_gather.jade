@@ -1,0 +1,16 @@
+extends ./layout.jade
+
+block content
+  div
+    form(name='gather-milestone', method='post')
+      div(class='form-group')
+        label Title
+        input(type='text', name='title', placeholder='title')
+      div(class='form-group')
+        label Date
+        input(type='date', name='date', placeholder='')
+      div(class='form-group')
+        label Description
+        textarea(name='description', placeholder='description...')
+      
+      button(type="submit" class="btn btn-default") Submit

@@ -1,0 +1,24 @@
+extends ./layout.jade
+
+block content
+  div(class='container row')
+    div(class='container-fluid')
+      table(class='table table-striped')
+        tr
+          th #
+          th label
+          th tool
+          td description
+          td rating
+          each val in methods
+            tr
+              td= val._id
+              td= val.label
+              td= val.tool
+              td= val.description
+              td
+                form(name='rate-method', method='post')
+                  label Rating
+                  input(type='hidden', name='_id', value='#{val._id}')
+                  input(type='number', name='rating', placeholder='#{val.rating}')
+                  button(type="submit" class="btn btn-default") Submit

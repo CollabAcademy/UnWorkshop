@@ -1,14 +1,17 @@
-'use strict';
-module.exports = function(sequelize, DataTypes) {
-  var User = sequelize.define('User', {
-    name: DataTypes.STRING,
-    email: DataTypes.STRING
-  }, {
-    classMethods: {
-      associate: function(models) {
-        // associations can be defined here
-      }
-    }
-  });
-  return User;
-};
+var mongoose = require("mongoose");
+
+var UserSchema = new mongoose.Schema({
+  name: String,
+  email: { type: String, index: true },
+  date: { type: Date, default: Date.now }
+});
+
+UserSchema.statics.findByEmail = function (email, cb) {
+  return this.find({ email: email }, cb);
+}
+
+var User = mongoose.model('User', UserSchema);
+
+module.exports = {
+  User: User
+}

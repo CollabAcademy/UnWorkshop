@@ -12,7 +12,10 @@ app.locals = {
   rate_at_a_time: 5,
   stage_one_seeker: 0,
   stage_two_seeker: 0,
-  stage_three_seeker: 0
+  stage_three_seeker: 0,
+  stage_one_field: ['title', 'blurb', 'success_metrics'],
+  stage_two_field: ['label', 'title', 'description'],
+  stage_three_field: ['title', 'description']
 }
 
 // ===== config files, values need to be updated by the admin
